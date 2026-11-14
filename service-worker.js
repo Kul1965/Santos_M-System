@@ -1,4 +1,4 @@
-const CACHE_NAME = "santos-cooking-house-v9";
+const CACHE_NAME = "santos-cooking-house-v10";
 const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/santos-home-kitchen.svg"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
