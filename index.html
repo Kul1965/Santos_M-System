@@ -751,7 +751,7 @@ body.mobile-nav-open{overflow:hidden!important}
       <div class="stat">
         <div>
           <div class="stat-label">Office se liya gaya paisa</div>
-          <div class="stat-number" id="advance">Rs 0</div>
+          <div class="stat-number" id="advance">A$0</div>
         </div>
         <div class="stat-icon">🪙</div>
       </div>
@@ -767,7 +767,7 @@ body.mobile-nav-open{overflow:hidden!important}
       <div class="stat">
         <div>
           <div class="stat-label">Stock Value</div>
-          <div class="stat-number" id="stockValue">Rs 0</div>
+          <div class="stat-number" id="stockValue">A$0</div>
         </div>
         <div class="stat-icon">💎</div>
       </div>
@@ -783,7 +783,7 @@ body.mobile-nav-open{overflow:hidden!important}
       <div class="stat">
         <div>
           <div class="stat-label">Total Purchases</div>
-          <div class="stat-number" id="purchases">Rs 0</div>
+          <div class="stat-number" id="purchases">A$0</div>
         </div>
         <div class="stat-icon">🛒</div>
       </div>
@@ -791,7 +791,7 @@ body.mobile-nav-open{overflow:hidden!important}
       <div class="stat">
         <div>
           <div class="stat-label">Total Expenses</div>
-          <div class="stat-number" id="expenses">Rs 0</div>
+          <div class="stat-number" id="expenses">A$0</div>
         </div>
         <div class="stat-icon">📄</div>
       </div>
@@ -877,19 +877,19 @@ body.mobile-nav-open{overflow:hidden!important}
         <h3>💳 Mess Balance Summary</h3>
         <div class="balance-row">
           <span>Total Collection</span>
-          <b id="collection">Rs 0</b>
+          <b id="collection">A$0</b>
         </div>
         <div class="balance-row">
           <span>Total Expenses</span>
-          <b id="balanceExpenses">Rs 0</b>
+          <b id="balanceExpenses">A$0</b>
         </div>
         <div class="balance-row">
           <span>Pending Dues</span>
-          <b id="dues">Rs 0</b>
+          <b id="dues">A$0</b>
         </div>
         <div class="balance-row">
           <span>Available Balance</span>
-          <b id="balance">Rs 0</b>
+          <b id="balance">A$0</b>
         </div>
       </div>
 
@@ -937,7 +937,7 @@ body.mobile-nav-open{overflow:hidden!important}
 
 <script>
 const money = n =>
-  "Rs " + Number(n || 0).toLocaleString("en-IN",{maximumFractionDigits:2});
+  "A$" + Number(n || 0).toLocaleString("en-AU",{maximumFractionDigits:2});
 
 function safe(value) {
   return String(value ?? "").replace(/[&<>"']/g, c => ({
