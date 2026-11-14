@@ -636,6 +636,27 @@ body.mobile-nav-open{overflow:hidden!important}
 </style>
 <link rel="stylesheet" href="./assets/sidebar-boot.css?v=20261114-homeheaderfix">
 <link rel="icon" type="image/svg+xml" href="./icons/santos-home-kitchen.svg?v=home-kitchen-1">
+<style id="santos-stable-tabs-fix">
+/* Final override: prevent old layered tab styles from jumping or flipping */
+.top-nav,.top-nav *,.mobile-tabbar,.mobile-tabbar *{
+ animation:none!important;
+ transition:none!important;
+}
+.top-nav a,.top-nav a:hover,.top-nav a:focus,.top-nav a:active,.top-nav a.selected,
+.top-nav .tab-menu,.top-nav .tab-menu:hover,
+.mobile-tabbar a,.mobile-tabbar a:hover,.mobile-tabbar .tab-menu{
+ transform:none!important;
+ translate:none!important;
+ rotate:none!important;
+ scale:1!important;
+ box-shadow:none!important;
+}
+.top-nav a:hover,.top-nav a.selected{background:#087b49!important;border-color:#9bd7b3!important;color:#fff!important}
+@media(min-width:851px) and (max-width:1400px){
+ .top-nav{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important}
+ .top-nav a{flex:0 0 auto!important}
+}
+</style>
 </head>
 
 <body>
