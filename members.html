@@ -225,7 +225,7 @@ td.no-print{white-space:nowrap}
    </div>
   </div>
   <div class="toolbar">
-   <input class="search" id="search" placeholder="Search name, force number or rank..." oninput="render()">
+   <input class="search" id="search" placeholder="Search name, ID number or rank..." oninput="render()">
    <select id="filter" style="max-width:180px" onchange="render()">
     <option value="All">All Members</option>
     <option value="Active">Active</option>
@@ -243,7 +243,7 @@ td.no-print{white-space:nowrap}
   <div class="table-wrap">
    <table>
     <thead><tr>
-     <th>Photo</th><th>Force No.</th><th>Member Name</th>
+     <th>Photo</th><th>ID No.</th><th>Member Name</th><th>Age</th>
      <th>Rank</th><th>Contact</th><th>Joining Date</th>
      <th>Status</th><th class="no-print">Actions</th>
     </tr></thead>
@@ -267,12 +267,16 @@ td.no-print{white-space:nowrap}
   <form id="memberForm">
    <div class="form-grid">
     <div class="field">
-     <label>Force Number *</label>
-     <input id="forceNo" required placeholder="Enter force number">
+     <label>ID No. *</label>
+     <input id="forceNo" required placeholder="Enter ID number">
     </div>
     <div class="field">
      <label>Member Name *</label>
      <input id="name" required placeholder="Full name">
+    </div>
+    <div class="field">
+     <label>Age (Years)</label>
+     <input id="age" type="number" min="1" max="120" step="1" inputmode="numeric" placeholder="Enter age">
     </div>
     <div class="field">
      <label>Rank *</label>
@@ -481,15 +485,16 @@ function setMemberFilter(status){
   const leaveStat=document.getElementById("onLeave");if(leaveStat)leaveStat.textContent=members.filter(m=>m.status==="Leave").length;
 
  const list=members.filter(m=>{
-  const text=[m.forceNo,m.name,m.rank,m.contact,m.transferLocation,m.transferDate,m.finalBillPaid].join(" ").toLowerCase();
+  const text=[m.idNo,m.forceNo,m.name,m.age,m.rank,m.contact,m.transferLocation,m.transferDate,m.finalBillPaid].join(" ").toLowerCase();
   return text.includes(query)&&(filter==="All"||(m.status||"Active")===filter);
  });
  document.getElementById("empty").style.display=list.length?"none":"block";
  document.getElementById("memberRows").innerHTML=list.map(m=>`
  <tr>
   <td>${m.photo?`<img class="photo" src="${m.photo}" alt="Member">`:"👤"}</td>
-  <td>${esc(m.forceNo)}</td>
+  <td>${esc(m.idNo??m.forceNo)}</td>
   <td>${esc(m.name)}</td>
+  <td>${esc(m.age||"—")}</td>
   <td>${esc(m.rank)}</td>
   <td>${esc(m.contact)}</td>
   <td>${esc(m.joiningDate)}</td>
@@ -509,7 +514,7 @@ function openForm(id=null){
  if(id){
   const m=members.find(x=>x.id===id);
   if(!m)return;
-  ["forceNo","name","rank","contact","joiningDate","status","remarks"]
+  ["forceNo","name","age","rank","contact","joiningDate","status","remarks"]
    .forEach(k=>document.getElementById(k).value=m[k]??"");
   document.getElementById("foodPreference").value=m.foodPreference||"Both";
  }
@@ -595,7 +600,9 @@ document.getElementById("memberForm").addEventListener("submit",async e=>{
    id:editingId||("M"+Date.now()),
    transferHistory,
    leaveHistory:Array.isArray(old?.leaveHistory)?[...old.leaveHistory]:[],
+   idNo:document.getElementById("forceNo").value.trim(),
    forceNo:document.getElementById("forceNo").value.trim(),
+   age:document.getElementById("age").value?Number(document.getElementById("age").value):"",
    name:document.getElementById("name").value.trim(),
    rank:document.getElementById("rank").value,
    contact:document.getElementById("contact").value.trim(),
@@ -613,9 +620,9 @@ document.getElementById("memberForm").addEventListener("submit",async e=>{
   };
   const previousPreference=old?.foodPreference||"Both";
   if(old&&previousPreference!==member.foodPreference)member.foodPreferenceHistory.push({from:previousPreference,to:member.foodPreference,effectiveDate:new Date().toISOString().slice(0,10),recordedAt:new Date().toISOString()});
-  if(!member.forceNo||!member.name){showToast("Enter force number and member name.");return}
-  const duplicate=data.members.find(m=>m.forceNo.toLowerCase()===member.forceNo.toLowerCase()&&m.id!==member.id);
-  if(duplicate){showToast("This force number is already registered.");return}
+  if(!member.idNo||!member.name){showToast("Enter ID number and member name.");return}
+  const duplicate=data.members.find(m=>String(m.idNo??m.forceNo??"").toLowerCase()===member.idNo.toLowerCase()&&m.id!==member.id);
+  if(duplicate){showToast("This ID number is already registered.");return}
   if(editingId){
    const i=data.members.findIndex(m=>m.id===editingId);
    data.members[i]=member;
@@ -684,10 +691,10 @@ function viewMember(id){
   }else{
    portions=(r.ingredientUsage||[]).map(i=>{const count=Math.max(1,(r.memberIds||[]).length);const perQty=i.recipeQuantity!=null?Number(i.recipeQuantity)/count:Number(i.quantity||0)/count;return {name:i.itemName,quantity:perQty,unit:i.recipeUnit||i.unit}});
   }
-  return '<div class="meal-entry"><div class="meal-head"><b>'+esc((memberSnap?.dishes||r.recipeNames||[]).join(" + ")||r.recipeName||r.items?.[0]||"Menu")+'</b><b>'+money(memberSnap?.charge??r.chargePerMember)+'</b></div><small>'+esc(r.date)+' · '+esc(r.mealType||"Meal")+' · '+esc(memberSnap?.foodChoice||r.foodType||memberSnap?.foodPreference||"—")+'</small><div><b>Per-member ration:</b> '+portions.map(i=>esc(i.name)+': '+esc(Number(i.quantity.toFixed(3)))+' '+esc(i.unit)).join(' • ')+'</div><small>Member: '+esc(memberSnap?.name||m.name)+' · Force No: '+esc(memberSnap?.forceNo||m.forceNo)+'</small><br><small>Total meal members: '+esc((r.memberIds||[]).length)+' · Total meal cost: '+money(r.totalCost??(Number(r.chargePerMember||0)*((r.memberIds||[]).length)))+'</small></div>';
+  return '<div class="meal-entry"><div class="meal-head"><b>'+esc((memberSnap?.dishes||r.recipeNames||[]).join(" + ")||r.recipeName||r.items?.[0]||"Menu")+'</b><b>'+money(memberSnap?.charge??r.chargePerMember)+'</b></div><small>'+esc(r.date)+' · '+esc(r.mealType||"Meal")+' · '+esc(memberSnap?.foodChoice||r.foodType||memberSnap?.foodPreference||"—")+'</small><div><b>Per-member ration:</b> '+portions.map(i=>esc(i.name)+': '+esc(Number(i.quantity.toFixed(3)))+' '+esc(i.unit)).join(' • ')+'</div><small>Member: '+esc(memberSnap?.name||m.name)+' · ID No: '+esc(memberSnap?.idNo||memberSnap?.forceNo||m.idNo||m.forceNo)+'</small><br><small>Total meal members: '+esc((r.memberIds||[]).length)+' · Total meal cost: '+money(r.totalCost??(Number(r.chargePerMember||0)*((r.memberIds||[]).length)))+'</small></div>';
  }).join(""):'<p>No meal record yet.</p>';
  document.getElementById("memberDetails").innerHTML=(m.photo?'<img src="'+m.photo+'" alt="Member photo"><br>':'')+(m.document&&m.document.data?'<h3 class="view-heading">Movement Orders / Member Document</h3><div class="meal-entry" style="display:table;width:fit-content;max-width:100%;min-width:0;overflow:hidden;margin:8px 0;padding:5px">'+(String(m.document.type||"").startsWith("image/")?'<img src="'+m.document.data+'" alt="Member document" style="display:block;width:auto;height:auto;max-width:100%;max-height:240px;object-fit:contain;margin:8px 0;border-radius:8px;background:#f2f6f3">':'<iframe title="Member PDF Document" src="'+m.document.data+'" style="display:block;width:100%;height:220px;max-height:32vh;border:1px solid #dce5df;border-radius:8px;margin-top:10px;background:#fff"></iframe>')+'</div>':'')+
- '<b>Force Number:</b> '+esc(m.forceNo)+'<br><b>Name:</b> '+esc(m.name)+'<br><b>Rank:</b> '+esc(m.rank)+'<br><b>Contact:</b> '+esc(m.contact)+'<br><b>Joining Date:</b> '+esc(m.joiningDate)+'<br><b>Status:</b> '+esc(m.status)+'<br><b>Food Preference:</b> '+esc(m.foodPreference||"Both")+'<br><b>Transfer Location:</b> '+esc(m.transferLocation||"—")+'<br><b>Transfer Date:</b> '+esc(m.transferDate||"—")+'<br><b>Final Mess Bill:</b> '+money(m.finalBillAmount)+'<br><b>Final Bill Status:</b> '+esc(m.finalBillPaid||"Not Paid")+'<br><b>Remarks:</b> '+esc(m.remarks)+
+ '<b>ID No.:</b> '+esc(m.idNo??m.forceNo)+'<br><b>Name:</b> '+esc(m.name)+'<br><b>Age:</b> '+esc(m.age||"—")+'<br><b>Rank:</b> '+esc(m.rank)+'<br><b>Contact:</b> '+esc(m.contact)+'<br><b>Joining Date:</b> '+esc(m.joiningDate)+'<br><b>Status:</b> '+esc(m.status)+'<br><b>Food Preference:</b> '+esc(m.foodPreference||"Both")+'<br><b>Transfer Location:</b> '+esc(m.transferLocation||"—")+'<br><b>Transfer Date:</b> '+esc(m.transferDate||"—")+'<br><b>Final Mess Bill:</b> '+money(m.finalBillAmount)+'<br><b>Final Bill Status:</b> '+esc(m.finalBillPaid||"Not Paid")+'<br><b>Remarks:</b> '+esc(m.remarks)+
  '<h3 class="view-heading">Transfer History</h3>'+(Array.isArray(m.transferHistory)&&m.transferHistory.length?m.transferHistory.map(h=>'<div class="meal-entry">'+esc(h.date)+' · '+esc(h.location||"Location not entered")+'</div>').join(""):'<p>No transfer history recorded.</p>')+
  '<h3 class="view-heading">Leave / Chhutti Details</h3><div class="meal-entry"><b>Status:</b> '+(m.status==="Leave"?"On Leave":"Not on Leave")+'<br><b>From:</b> '+esc(m.leaveFrom||"—")+'<br><b>Return Date:</b> '+esc(m.leaveTo||"—")+'<br><b>Reason:</b> '+esc(m.leaveReason||"—")+'</div>'+
  '<h3 class="view-heading">Food Preference History</h3>'+(Array.isArray(m.foodPreferenceHistory)&&m.foodPreferenceHistory.length?m.foodPreferenceHistory.slice().reverse().map(h=>'<div class="meal-entry"><b>'+esc(h.from||"Both")+' → '+esc(h.to||"Both")+'</b><br><small>Effective: '+esc(h.effectiveDate||"—")+' · Recorded: '+esc(h.recordedAt||"—")+'</small></div>').join(""):'<p>No food preference changes recorded.</p>')+
@@ -717,7 +724,7 @@ function viewMemberDocument(id){
 function openLeaveCard(){
  const m=members.find(x=>String(x.id)===String(viewingId));
  if(!m){showToast("Member details nahi mile.","error");return}
- document.getElementById("leaveMemberTitle").textContent=m.name+" · "+m.forceNo;
+ document.getElementById("leaveMemberTitle").textContent=m.name+" · "+(m.idNo??m.forceNo);
  document.getElementById("leaveFrom").value=m.leaveFrom||new Date().toISOString().slice(0,10);
  document.getElementById("leaveTo").value=m.leaveTo||"";
  document.getElementById("leaveReason").value=m.leaveReason||"";
@@ -854,7 +861,7 @@ function printMember(shareMode){
  }).join("")||'<tr><td colspan="4" class="empty">No meal records</td></tr>';
  const payRows=tx.map(t=>'<tr><td>'+esc(t.date)+'</td><td>'+esc(t.type)+'</td><td>'+esc(t.description)+'</td><td>'+money(t.amount)+'</td></tr>').join("")||'<tr><td colspan="4" class="empty">No payment records</td></tr>';
  const messName=esc(d.settings?.messName||"SANTOS COOKING HOUSE – COOKING HOUSE");
- const statementHtml='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Member Statement</title><style>*{box-sizing:border-box}body{font:14px Arial,sans-serif;padding:24px;color:#183b2c;background:#fff}.sheet{max-width:950px;margin:auto;border:3px solid #176747;padding:20px;border-radius:12px}.masthead{display:flex;align-items:center;gap:16px;padding:16px;background:linear-gradient(110deg,#10563e,#176747);color:#fff;border-bottom:5px solid #d8b33e;border-radius:8px}.seal{width:76px;height:76px;flex:0 0 76px;border:3px solid #f3d46b;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:18px;color:#fff}.masthead h1{font-size:22px;margin:0}.masthead p{margin:5px 0 0;color:#e4f3e9}.subtitle{text-align:center;color:#176747;margin:18px 0;font-size:18px}.member-photo{text-align:center;margin:14px}.member-photo img{width:110px;height:110px;object-fit:cover;border:3px solid #d8b33e;border-radius:10px}.attached-document{display:inline-block;max-width:100%;margin:8px 0;padding:6px;border:1px solid #a9d0b8;border-radius:8px;background:#edf6f0}.attached-document img{display:block;width:auto;height:auto;max-width:100%;max-height:260px;max-width:48%;object-fit:contain;border-radius:5px}.placeholder{font-size:54px;color:#176747}.identity{background:#edf6f0;border:1px solid #a9d0b8;border-radius:8px;padding:12px;line-height:1.8}.summary{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}.summary div{flex:1;min-width:150px;padding:13px;border:1px solid #a9d0b8;border-top:4px solid #176747;border-radius:8px;background:#f0f8f3}.summary b{font-size:18px;color:#10563e}h3{color:#10563e;border-bottom:2px solid #d8b33e;padding-bottom:6px;margin-top:22px}table{width:100%;border-collapse:collapse;margin:12px 0}th{background:#176747;color:#fff}th,td{border:1px solid #9db9a7;padding:8px;text-align:left}tr:nth-child(even){background:#edf6f0}.empty{text-align:center;color:#718278}.generated{margin-top:20px;padding-top:10px;border-top:1px solid #a9d0b8;color:#64776c;font-size:12px}.foot{text-align:center;color:#176747;font-weight:bold;margin-top:12px}@media print{body{padding:0}.sheet{border:2px solid #176747;border-radius:0}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}@page{size:auto;margin:10mm}</style></head><body><div class="sheet"><div class="masthead"><img class="seal" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/SANTOS_Logo.svg" alt="SANTOS Monogram" style="object-fit:contain;background:#fff;padding:4px"><div><h1>'+messName+'</h1><p>MEMBER MEAL & ACCOUNT STATEMENT</p></div></div><h2 class="subtitle">Individual Member Statement</h2>'+photoHtml+'<div class="identity"><b>Member Name:</b> '+esc(m.name)+' &nbsp; <b>Force No:</b> '+esc(m.forceNo)+'<br><b>Rank:</b> '+esc(m.rank)+'</div>'+documentHtml+'<div class="summary"><div>Total Meal Charges<br><b>'+money(total)+'</b></div><div>Mess Cutting Paid<br><b>'+money(paid)+'</b></div><div>Balance Due<br><b>'+money(Math.max(0,total-paid))+'</b></div></div><h3>Meal Details – What Member Ate</h3><table><tr><th>Date</th><th>Recipe</th><th>Ration Consumed</th><th>Charge</th></tr>'+mealRows+'</table><h3>Payment History</h3><table><tr><th>Date</th><th>Type</th><th>Details</th><th>Amount</th></tr>'+payRows+'</table><div class="generated">Generated: '+esc(new Date().toLocaleString())+'</div><div class="foot">SANTOS COOKING HOUSE SYSTEM</div></div><script src="js/login-lock.js?v=20261110-nco-login1"><\/script></body></html>';
+ const statementHtml='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Member Statement</title><style>*{box-sizing:border-box}body{font:14px Arial,sans-serif;padding:24px;color:#183b2c;background:#fff}.sheet{max-width:950px;margin:auto;border:3px solid #176747;padding:20px;border-radius:12px}.masthead{display:flex;align-items:center;gap:16px;padding:16px;background:linear-gradient(110deg,#10563e,#176747);color:#fff;border-bottom:5px solid #d8b33e;border-radius:8px}.seal{width:76px;height:76px;flex:0 0 76px;border:3px solid #f3d46b;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:18px;color:#fff}.masthead h1{font-size:22px;margin:0}.masthead p{margin:5px 0 0;color:#e4f3e9}.subtitle{text-align:center;color:#176747;margin:18px 0;font-size:18px}.member-photo{text-align:center;margin:14px}.member-photo img{width:110px;height:110px;object-fit:cover;border:3px solid #d8b33e;border-radius:10px}.attached-document{display:inline-block;max-width:100%;margin:8px 0;padding:6px;border:1px solid #a9d0b8;border-radius:8px;background:#edf6f0}.attached-document img{display:block;width:auto;height:auto;max-width:100%;max-height:260px;max-width:48%;object-fit:contain;border-radius:5px}.placeholder{font-size:54px;color:#176747}.identity{background:#edf6f0;border:1px solid #a9d0b8;border-radius:8px;padding:12px;line-height:1.8}.summary{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}.summary div{flex:1;min-width:150px;padding:13px;border:1px solid #a9d0b8;border-top:4px solid #176747;border-radius:8px;background:#f0f8f3}.summary b{font-size:18px;color:#10563e}h3{color:#10563e;border-bottom:2px solid #d8b33e;padding-bottom:6px;margin-top:22px}table{width:100%;border-collapse:collapse;margin:12px 0}th{background:#176747;color:#fff}th,td{border:1px solid #9db9a7;padding:8px;text-align:left}tr:nth-child(even){background:#edf6f0}.empty{text-align:center;color:#718278}.generated{margin-top:20px;padding-top:10px;border-top:1px solid #a9d0b8;color:#64776c;font-size:12px}.foot{text-align:center;color:#176747;font-weight:bold;margin-top:12px}@media print{body{padding:0}.sheet{border:2px solid #176747;border-radius:0}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}@page{size:auto;margin:10mm}</style></head><body><div class="sheet"><div class="masthead"><img class="seal" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/SANTOS_Logo.svg" alt="SANTOS Monogram" style="object-fit:contain;background:#fff;padding:4px"><div><h1>'+messName+'</h1><p>MEMBER MEAL & ACCOUNT STATEMENT</p></div></div><h2 class="subtitle">Individual Member Statement</h2>'+photoHtml+'<div class="identity"><b>Member Name:</b> '+esc(m.name)+' &nbsp; <b>ID No:</b> '+esc(m.idNo??m.forceNo)+'<br><b>Age:</b> '+esc(m.age||"—")+'<br><b>Rank:</b> '+esc(m.rank)+'</div>'+documentHtml+'<div class="summary"><div>Total Meal Charges<br><b>'+money(total)+'</b></div><div>Mess Cutting Paid<br><b>'+money(paid)+'</b></div><div>Balance Due<br><b>'+money(Math.max(0,total-paid))+'</b></div></div><h3>Meal Details – What Member Ate</h3><table><tr><th>Date</th><th>Recipe</th><th>Ration Consumed</th><th>Charge</th></tr>'+mealRows+'</table><h3>Payment History</h3><table><tr><th>Date</th><th>Type</th><th>Details</th><th>Amount</th></tr>'+payRows+'</table><div class="generated">Generated: '+esc(new Date().toLocaleString())+'</div><div class="foot">SANTOS COOKING HOUSE SYSTEM</div></div><script src="js/login-lock.js?v=20261110-nco-login1"><\/script></body></html>';
  w.document.write(statementHtml);
  
  if(shareMode){
@@ -865,7 +872,7 @@ function printMember(shareMode){
     if(!window.html2pdf){
      await new Promise((resolve,reject)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";sc.onload=resolve;sc.onerror=()=>reject(new Error("PDF sharing tool load nahi hua. Internet check karein."));document.head.appendChild(sc);});
     }
-    const blob=await window.html2pdf().set({margin:8,filename:"Member-Statement-"+String(m.forceNo||m.name).replace(/[^a-z0-9_-]/gi,"_")+".pdf",image:{type:"jpeg",quality:0.88},html2canvas:{scale:1.5,useCORS:true,allowTaint:false,backgroundColor:"#ffffff"},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}}).from(w.document.querySelector(".sheet")).outputPdf("blob");
+    const blob=await window.html2pdf().set({margin:8,filename:"Member-Statement-"+String(m.idNo||m.forceNo||m.name).replace(/[^a-z0-9_-]/gi,"_")+".pdf",image:{type:"jpeg",quality:0.88},html2canvas:{scale:1.5,useCORS:true,allowTaint:false,backgroundColor:"#ffffff"},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}}).from(w.document.querySelector(".sheet")).outputPdf("blob");
     const file=new File([blob],"Member-Statement-"+String(m.forceNo||m.name).replace(/[^a-z0-9_-]/gi,"_")+".pdf",{type:"application/pdf"});
     const shareText="Namaste "+m.name+" ji, aapka Santos Cooking House Member Statement PDF bhej raha hoon.";
     window.crpfReadyMemberPdf={file:file,text:shareText,phone:String(m.contact||"").replace(/\\D/g,"")};
