@@ -244,7 +244,7 @@ td.no-print{white-space:nowrap}
    <table>
     <thead><tr>
      <th>Photo</th><th>ID No.</th><th>Member Name</th><th>Age</th>
-     <th>Rank</th><th>Contact</th><th>Joining Date</th>
+     <th>Rank</th><th>Food Preference</th><th>Contact</th><th>Joining Date</th>
      <th>Status</th><th class="no-print">Actions</th>
     </tr></thead>
     <tbody id="memberRows"></tbody>
@@ -485,7 +485,7 @@ function setMemberFilter(status){
   const leaveStat=document.getElementById("onLeave");if(leaveStat)leaveStat.textContent=members.filter(m=>m.status==="Leave").length;
 
  const list=members.filter(m=>{
-  const text=[m.idNo,m.forceNo,m.name,m.age,m.rank,m.contact,m.transferLocation,m.transferDate,m.finalBillPaid].join(" ").toLowerCase();
+  const text=[m.idNo,m.forceNo,m.name,m.age,m.rank,m.foodPreference,m.contact,m.transferLocation,m.transferDate,m.finalBillPaid].join(" ").toLowerCase();
   return text.includes(query)&&(filter==="All"||(m.status||"Active")===filter);
  });
  document.getElementById("empty").style.display=list.length?"none":"block";
@@ -496,6 +496,7 @@ function setMemberFilter(status){
   <td>${esc(m.name)}</td>
   <td>${esc(m.age||"—")}</td>
   <td>${esc(m.rank)}</td>
+  <td><b>${esc(m.foodPreference||"Both")}</b></td>
   <td>${esc(m.contact)}</td>
   <td>${esc(m.joiningDate)}</td>
   <td><span class="status ${(m.status||"Active")==="Inactive"?"inactive":""}">${esc(m.status||"Active")}</span></td>
