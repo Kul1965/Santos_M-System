@@ -1,0 +1,139 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Backup & Restore | CRPF Mess</title><link rel="stylesheet" href="css/app.css?v=20261109-audit-refresh1"><link rel="stylesheet" href="./assets/command-centre.css?v=20261113-soft3d-buttons">
+<link rel="manifest" href="./manifest.webmanifest?v=sky-png-1">
+<link rel="icon" type="image/png" href="./icons/crpf-monogram-192.png?v=sky-png-1">
+<link rel="apple-touch-icon" href="./icons/crpf-monogram-192.png?v=sky-png-1">
+<link rel="stylesheet" href="./assets/sidebar-boot.css?v=20261114-homeheaderfix">
+</head><body><div class="app"><aside class="sidebar"><div class="brand">🛡️<b>CRPF MESS</b><small>Cooking House System</small></div><nav class="nav"><a href="index.html">▦ Dashboard</a><a href="members.html">👥 Members</a><a href="ration-store.html">📦 Ration Store</a><a href="purchases.html">🛒 Purchases</a><a href="recipes.html">🍲 Recipes</a><a href="making-menu.html">📅 Making Menu</a><a href="mess-staff.html">👨‍🍳 Mess Staff</a><a href="accounts.html">💰 Accounts</a><a href="reports.html">📊 Reports</a><a href="mess-handover.html">🔄 Mess Handover</a><a href="settings.html">⚙️ Settings</a><a class="active" href="backup.html">💾 Backup & Restore</a><a href="software-guide.html">📖 हिन्दी गाइड</a></nav></aside><main class="main"><header class="topbar"><h1>CRPF Mess Management System</h1><span id="dateNow"></span></header><div class="content"><div class="pagehead"><h2>💾 Backup & Restore</h2><div class="muted">Ek hi full backup mein sabhi pages ka data save hoga — Members, Ration, Purchases, Recipes, Menu, Accounts, Staff, Handover aur Reports ke records.</div></div><section class="cards" id="backupStats"><div class="card"><small>Members</small><strong id="members">0</strong></div><div class="card"><small>Ration Items</small><strong id="items">0</strong></div><div class="card"><small>Purchases</small><strong id="purchases">0</strong></div><div class="card"><small>Recipes</small><strong id="recipes">0</strong></div><div class="card"><small>Meal Records</small><strong id="meals">0</strong></div><div class="card"><small>Account Entries</small><strong id="transactions">0</strong></div><div class="card"><small>Mess Staff</small><strong id="staff">0</strong></div><div class="card"><small>Handover Records</small><strong id="handovers">0</strong></div></section><section class="panel"><h3>One Full Backup – Create / Update</h3><p class="muted" style="margin:10px 0 16px">Update Existing Backup dabayein aur phone se apni purani <b>CRPF-Mess-Backup.json</b> file select karein. Us file mein sabhi pages ka latest data overwrite ho jayega. Agar pehli baar hai to Create Backup dabayein.</p><button onclick="updateExistingBackup()">🔄 Update Existing Backup</button><button class="alt" style="margin-left:8px" onclick="createBackup()">💾 Create New Backup</button><p class="muted" style="margin-top:12px">Member photos aur browser mein saved tamam app records bhi backup mein shamil hain.</p></section>
+<section class="panel" style="margin-top:14px"><h3>Restore Full Backup</h3><p class="muted" style="margin:10px 0 16px">Restore karne par is device ka current CRPF Mess data backup wale data se replace ho jayega. Pehle current backup bana lein.</p><input id="backupFile" type="file" accept=".json,application/json"><button class="danger" style="margin-top:12px" onclick="restore()">Restore Selected Backup</button><p id="message" class="muted" style="margin-top:12px"></p></section></div></main></div><script>
+const KEY="crpfMessData";
+const $=id=>document.getElementById(id);
+function readAppData(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}}
+function collectFullBackup(){
+ const saved=localStorage.getItem(KEY);
+ let appData={};
+ try{appData=JSON.parse(saved||"{}")}catch(e){}
+ return {
+  backupFormat:"CRPF-MESS-FULL-BACKUP",
+  backupVersion:2,
+  appName:"CRPF Mess Management System",
+  createdAt:new Date().toISOString(),
+  storage:{[KEY]:saved||JSON.stringify(appData)},
+  appData
+ };
+}
+function setMessage(text,isError=false){
+ $("message").textContent=text;
+ $("message").style.color=isError?"#ff9da3":"#79e2a7";
+}
+function refreshCounts(){
+ const d=readAppData();
+ const count=(key)=>Array.isArray(d[key])?d[key].length:0;
+ $("members").textContent=count("members");
+ $("items").textContent=count("ration");
+ $("purchases").textContent=count("purchases");
+ $("recipes").textContent=count("recipes");
+ $("meals").textContent=count("mealRecords");
+ $("transactions").textContent=count("transactions");
+ $("staff").textContent=count("staff");
+ $("handovers").textContent=count("handovers");
+ $("dateNow").textContent=new Date().toLocaleDateString();
+}
+function backupBlob(){
+ const snapshot=collectFullBackup();
+ return new Blob([JSON.stringify(snapshot,null,2)],{type:"application/json"});
+}
+async function updateExistingBackup(){
+ const blob=backupBlob(),fixedName="CRPF-Mess-Backup.json";
+ try{
+  if(window.showOpenFilePicker){
+   const handles=await window.showOpenFilePicker({multiple:false,types:[{description:"CRPF Mess Backup JSON",accept:{"application/json":[".json"]}}]});
+   const handle=handles[0];
+   if(!handle)return;
+   const writable=await handle.createWritable();
+   await writable.write(blob);
+   await writable.close();
+   setMessage("✓ Full backup updated successfully! Sabhi pages ka latest data isi file mein save ho gaya.");
+   return;
+  }
+  if(window.showSaveFilePicker){
+   const handle=await window.showSaveFilePicker({suggestedName:fixedName,types:[{description:"CRPF Mess Backup JSON",accept:{"application/json":[".json"]}}]});
+   const writable=await handle.createWritable();
+   await writable.write(blob);
+   await writable.close();
+   setMessage("✓ Full backup saved. Agli baar isi file ko select karke update karein.");
+   return;
+  }
+  downloadBackup(blob,fixedName);
+  setMessage("✓ Full backup download hua. Is browser mein existing file ko direct overwrite karna supported nahi hai; Downloads mein purani file replace karein.");
+ }catch(e){
+  if(e.name==="AbortError")return;
+  setMessage("Backup update nahi hua: "+e.message,true);
+ }
+}
+async function createBackup(){
+ const blob=backupBlob(),fixedName="CRPF-Mess-Backup.json";
+ try{
+  const file=new File([blob],fixedName,{type:"application/json"});
+  if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+   await navigator.share({files:[file],title:"CRPF Mess Full Backup",text:"CRPF Mess ka complete data backup"});
+   setMessage("✓ Backup file share/save ke liye taiyar hai. Share menu mein Save to Files/Downloads chunein.");
+   return;
+  }
+  downloadBackup(blob,fixedName);
+  setMessage("✓ Backup download shuru ho gaya. Phone ke Downloads folder mein CRPF-Mess-Backup.json check karein.");
+ }catch(e){
+  if(e.name==="AbortError")return;
+  // Android share sheets can reject with Permission denied. Fall back to a normal file download.
+  try{
+   downloadBackup(blob,fixedName);
+   setMessage("✓ Backup download dobara try kiya gaya. Phone ke Downloads folder mein CRPF-Mess-Backup.json check karein. Agar prompt aaye to Allow/Download chunein.");
+  }catch(downloadError){
+   setMessage("Backup save nahi hua: "+downloadError.message+". Chrome Settings > Site settings > Automatic downloads allow karein, phir dobara try karein.",true);
+  }
+ }
+}
+function downloadBackup(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function restore(){
+ const file=$("backupFile").files[0];
+ if(!file){setMessage("Pehle backup JSON file select karein.",true);return}
+ const reader=new FileReader();
+ reader.onerror=()=>setMessage("Backup file read nahi ho saki.",true);
+ reader.onload=()=>{
+  let parsed,data=null;
+  try{parsed=JSON.parse(reader.result)}catch(e){setMessage("Backup JSON invalid hai. Original file safe rakhein.",true);return}
+  if(parsed&&parsed.backupFormat==="CRPF-MESS-FULL-BACKUP"&&parsed.storage&&typeof parsed.storage[KEY]==="string"){
+   try{data=JSON.parse(parsed.storage[KEY])}catch(e){setMessage("Backup ke andar app data parse nahi hua.",true);return}
+  }
+  if(!data&&parsed&&parsed.appData&&typeof parsed.appData==="object"&&!Array.isArray(parsed.appData))data=parsed.appData;
+  if(!data&&parsed&&typeof parsed==="object"&&!Array.isArray(parsed)&&!parsed.backupFormat)data=parsed;
+  if(!data||typeof data!=="object"||Array.isArray(data)){setMessage("Is file mein CRPF Mess data nahi mila. File delete na karein.",true);return}
+  const count=k=>Array.isArray(data[k])?data[k].length:0;
+  const summary="Members "+count("members")+" | Staff "+count("staff")+" | Ration "+count("ration")+" | Purchases "+count("purchases")+" | Recipes "+count("recipes")+" | Meals "+count("mealRecords")+" | Accounts "+count("transactions");
+  const fullText=JSON.stringify(data);
+  if(!confirm("Backup data check ho gaya. "+summary+". Restore karne se is browser ka current mess data replace hoga. Continue?"))return;
+  try{
+   // Replace the one app-data key atomically. Never remove the old data first:
+   // if quota or browser storage fails, the existing data must remain untouched.
+   localStorage.setItem(KEY,fullText);
+   const checkText=localStorage.getItem(KEY);
+   if(checkText!==fullText)throw new Error("Saved data verification failed");
+   const check=JSON.parse(checkText);
+   if(!check||typeof check!=="object"||Array.isArray(check))throw new Error("Saved data format verification failed");
+   setMessage("✓ Restore successful. "+summary+". Page reload ho raha hai…");
+   setTimeout(()=>location.reload(),1000);
+  }catch(err){
+   setMessage("Restore nahi ho paya: "+err.name+" — "+err.message+". Purana browser data delete nahi kiya gaya. Backup file safe rakhein.",true);
+  }
+ };
+ reader.readAsText(file);
+}
+refreshCounts();
+</script><script src="js/shared-header.js?v=20261113-no-flash1"></script>
+<script src="js/mobile-nav.js?v=20261109-desktop-drawer3"></script>
+<script src="js/pdf-tools.js?v=20261108-pdf-title8"></script>
+<script src="js/login-lock.js?v=20261110-nco-login1"></script>
+</body></html>

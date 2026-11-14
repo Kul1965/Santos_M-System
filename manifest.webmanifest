@@ -1,0 +1,20 @@
+{
+  "id": "./index.html",
+  "name": "CRPF Mess Management System",
+  "short_name": "CRPF Mess",
+  "description": "CRPF Mess Management System",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#10563e",
+  "theme_color": "#10563e",
+  "icons": [
+    {
+      "src": "./icons/crpf-monogram-192.png?v=sky-png-1",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
