@@ -1,25 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-<title id="title">SANTOS Australian Cooking House kangaroo emblem</title>
-<desc id="desc">A friendly Australian kangaroo silhouette inside a forest-green and gold cooking house badge.</desc>
+<title id="title">SANTOS Home Kitchen — Good Food</title>
+<desc id="desc">A colorful chef hat and cooking flames with a spoon and fork inside a circular Home Kitchen Good Food badge.</desc>
 <defs>
- <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#176747"/><stop offset="1" stop-color="#073b2a"/></linearGradient>
- <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f8df83"/><stop offset="1" stop-color="#b88a22"/></linearGradient>
- <radialGradient id="inner"><stop stop-color="#f4fff7"/><stop offset="1" stop-color="#cce8d6"/></radialGradient>
+ <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb02e"/><stop offset=".48" stop-color="#ffe64a"/><stop offset="1" stop-color="#ed2474"/></linearGradient>
+ <linearGradient id="hat" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff9b32"/><stop offset=".48" stop-color="#ff4c54"/><stop offset="1" stop-color="#d72b91"/></linearGradient>
+ <linearGradient id="fire" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff02f"/><stop offset=".52" stop-color="#ff9b20"/><stop offset="1" stop-color="#f12b70"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dy="5"/><feComponentTransfer><feFuncA type="linear" slope=".45"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-<rect x="18" y="18" width="476" height="476" rx="112" fill="url(#bg)" stroke="url(#gold)" stroke-width="13"/>
-<circle cx="256" cy="226" r="169" fill="url(#inner)" stroke="#e3c15b" stroke-width="8"/>
-<path d="M128 310c-35-9-55-26-63-49 27 12 48 17 72 13 17-3 30-12 41-25 15-18 22-41 34-57 16-23 38-35 67-35 20 0 34 7 43 18 8 10 11 23 8 37l-8 30 31 22 38 4c16 2 26 11 28 25 2 15-8 27-24 29l-49 5-42-13-18 32 8 35c4 17-5 28-20 29-16 1-27-10-30-26l-11-51-34-8-27 47c-9 15-24 20-37 12-13-8-16-23-8-38l26-48-24-9z" fill="#14563d"/>
-<path d="M278 165c-8-23-8-49-1-76 3-11 10-19 18-18 9 2 11 12 8 24l-7 42 20-45c5-11 13-16 21-12 8 5 7 16 1 27l-29 55" fill="#14563d"/>
-<path d="M204 223c-19 24-28 50-33 78-3 16 4 27 17 29 13 2 23-7 27-22 7-26 17-46 34-60" fill="#14563d"/>
-<path d="M270 255c15 14 28 21 45 25l-12 21c-22-3-42-13-57-29" fill="#e3c15b"/>
-<path d="M176 316c-31 16-57 29-87 35-15 3-26-3-27-15-1-11 7-19 21-22 27-6 50-17 72-32" fill="#14563d"/>
-<path d="M323 330c18 10 31 22 42 39 8 12 7 25-4 32-11 7-24 2-32-10l-31-45" fill="#14563d"/>
-<circle cx="309" cy="166" r="4.8" fill="#f8df83"/>
-<path d="M102 105l12 22 25 4-18 17 4 25-23-12-22 12 4-25-18-17 25-4z" fill="#d6b34c"/>
-<path d="M410 105l9 17 19 3-14 13 3 19-17-9-17 9 3-19-14-13 19-3z" fill="#d6b34c"/>
-<path d="M91 228c14-17 28-25 43-28M81 245c17-5 31-4 45 2M414 235c-12-16-25-24-42-27M426 252c-17-5-31-4-45 2" fill="none" stroke="#4b956b" stroke-width="5" stroke-linecap="round"/>
-<path d="M121 193c-12-8-17-18-15-29 14 1 23 9 27 22M132 210c-3-15 1-26 13-34 8 13 7 24-2 36M389 198c11-9 15-20 11-31-14 2-22 11-25 24M379 215c2-15-3-26-15-33-7 13-5 25 5 36" fill="#6eaa80"/>
-<path d="M150 405h212" stroke="#e3c15b" stroke-width="4" stroke-linecap="round"/>
-<text x="256" y="444" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="37" font-weight="800" letter-spacing="5" fill="#fff4ca">SANTOS</text>
-<text x="256" y="471" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" letter-spacing="4" fill="#d8eedd">AUSTRALIA</text>
+<circle cx="256" cy="258" r="222" fill="#11151d" fill-opacity=".96" stroke="url(#ring)" stroke-width="8"/>
+<circle cx="256" cy="258" r="202" fill="none" stroke="#ffe34a" stroke-width="5"/>
+<path d="M89 260C95 226 111 198 130 180M423 260c-6-34-22-62-41-80" fill="none" stroke="#ed3976" stroke-width="5" stroke-linecap="round"/>
+<!-- flames -->
+<path d="M174 207c-29-42 9-73 8-111 25 22 28 44 20 65 31-31 18-77 54-119 8 42 26 54 21 88 20-20 20-45 35-65 16 36 2 63-4 84 27-19 33-41 33-61 28 41 9 75-8 100l-14 25H190z" fill="url(#fire)" stroke="#15151b" stroke-width="7" stroke-linejoin="round"/>
+<!-- spoon and fork -->
+<g fill="#ffe52f" stroke="#161820" stroke-width="5" stroke-linejoin="round">
+ <path d="M111 169c-20-19-27-43-15-57 14-14 38 1 49 23 10 20 8 38-2 48l87 105-13 12-89-104c-13 2-26-7-17-27z"/>
+ <path d="M398 137l-25 66 13 10 40-63-15 77 14 6 36-91c5-15 2-26-7-29-9-3-16 5-21 17l-11 22 4-30c2-14-3-22-12-23-10-1-15 10-16 23z"/>
+ <path d="M378 205l-78 93 14 12 82-92z"/>
+</g>
+<!-- chef hat -->
+<path d="M170 310c-24-8-39-29-35-54 3-23 22-39 45-40 3-35 30-61 66-61 35 0 63 26 66 61 24 1 43 19 43 43 0 23-15 43-39 50l-7 44H179z" fill="url(#hat)" stroke="#15151b" stroke-width="10" stroke-linejoin="round" filter="url(#shadow)"/>
+<path d="M183 310c38 18 106 18 146 0l-8 47c-37 20-94 20-130 0z" fill="#e33b78" stroke="#15151b" stroke-width="8"/>
+<path d="M213 222c9-23 26-35 48-35 20 0 38 12 46 34" fill="none" stroke="#ffbf55" stroke-width="5" opacity=".65"/>
+<!-- lower label -->
+<path d="M69 375H443" stroke="#ffe34a" stroke-width="7"/>
+<text x="256" y="424" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="43" font-weight="900" letter-spacing="4" fill="#f34b80" stroke="#15151b" stroke-width="2" paint-order="stroke">HOME KITCHEN</text>
+<text x="256" y="461" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="900" letter-spacing="5" fill="#ffe34a">GOOD FOOD</text>
+<path d="M126 451h54m152 0h54" stroke="#ed3976" stroke-width="5" stroke-linecap="round"/>
+<path d="M256 475l7 13 14 2-10 10 2 14-13-7-13 7 2-14-10-10 14-2z" fill="#ed3976"/>
 </svg>
