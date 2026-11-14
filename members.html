@@ -793,10 +793,11 @@ function returnFromLeave(){
  refresh();viewMember(viewingId);openLeaveCard();showToast("Member marked Active / Returned.","success");
 }
 function memberChargeForRecord(record,memberId,data){
- const snap=(record.memberSnapshots||[]).find(x=>String(x.id)===String(memberId));
+ const snaps=Array.isArray(record.memberSnapshots)?record.memberSnapshots:[];
+ const snap=snaps.find(x=>String(x.id)===String(memberId));
  const saved=Number(snap?.charge);
  if(Number.isFinite(saved)&&saved>0)return saved;
- const dishNames=Array.isArray(snap?.dishes)?snap.dishes:[];
+ const dishNames=Array.isArray(snap?.dishes)&&snap.dishes.length?snap.dishes:(record.recipeNames||[]);
  if(dishNames.length){
   const fallback=dishNames.reduce((sum,name)=>{
    const recipe=(data.recipes||[]).find(x=>String(x.name||"").trim().toLowerCase()===String(name).trim().toLowerCase());
@@ -804,7 +805,12 @@ function memberChargeForRecord(record,memberId,data){
   },0);
   if(fallback>0)return fallback;
  }
- return Number(snap?.charge??record.chargePerMember??0)||0;
+ const savedPerMember=Number(record.chargePerMember);
+ if(Number.isFinite(savedPerMember)&&savedPerMember>0)return savedPerMember;
+ const count=Math.max(1,(record.memberIds||[]).length);
+ const total=Number(record.totalCost||0);
+ if(Number.isFinite(total)&&total>0)return total/count;
+ return Number.isFinite(saved)&&saved>0?saved:0;
 }
 function memberBillSummary(memberId){
  const d=getData(),m=(d.members||[]).find(x=>String(x.id)===String(memberId));
