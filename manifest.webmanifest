@@ -10,11 +10,6 @@
   "background_color": "#10563e",
   "theme_color": "#10563e",
   "icons": [
-    {
-      "src": "./icons/santos-home-kitchen.svg?v=sky-png-1",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
+    { "src": "./icons/santos-home-kitchen.svg?v=gold-green-v2", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }
