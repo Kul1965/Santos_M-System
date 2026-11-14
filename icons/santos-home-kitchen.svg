@@ -1,31 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-<title id="title">SANTOS Home Kitchen — Good Food</title>
-<desc id="desc">A colorful chef hat and cooking flames with a spoon and fork inside a circular Home Kitchen Good Food badge.</desc>
-<defs>
- <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb02e"/><stop offset=".48" stop-color="#ffe64a"/><stop offset="1" stop-color="#ed2474"/></linearGradient>
- <linearGradient id="hat" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset=".48" stop-color="#f4f7f5"/><stop offset="1" stop-color="#cbd8d0"/></linearGradient>
- <linearGradient id="fire" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe58a"/><stop offset=".52" stop-color="#e0b53b"/><stop offset="1" stop-color="#a77b18"/></linearGradient>
- <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dy="5"/><feComponentTransfer><feFuncA type="linear" slope=".45"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-</defs>
-<circle cx="256" cy="258" r="222" fill="#11151d" fill-opacity=".96" stroke="url(#ring)" stroke-width="8"/>
-<circle cx="256" cy="258" r="202" fill="none" stroke="#ffe34a" stroke-width="5"/>
-<path d="M89 260C95 226 111 198 130 180M423 260c-6-34-22-62-41-80" fill="none" stroke="#d8b13e" stroke-width="5" stroke-linecap="round"/>
-<!-- flames -->
-<path d="M174 207c-29-42 9-73 8-111 25 22 28 44 20 65 31-31 18-77 54-119 8 42 26 54 21 88 20-20 20-45 35-65 16 36 2 63-4 84 27-19 33-41 33-61 28 41 9 75-8 100l-14 25H190z" fill="url(#fire)" stroke="#15151b" stroke-width="7" stroke-linejoin="round"/>
-<!-- spoon and fork -->
-<g fill="#ffe52f" stroke="#161820" stroke-width="5" stroke-linejoin="round">
- <path d="M111 169c-20-19-27-43-15-57 14-14 38 1 49 23 10 20 8 38-2 48l87 105-13 12-89-104c-13 2-26-7-17-27z"/>
- <path d="M398 137l-25 66 13 10 40-63-15 77 14 6 36-91c5-15 2-26-7-29-9-3-16 5-21 17l-11 22 4-30c2-14-3-22-12-23-10-1-15 10-16 23z"/>
- <path d="M378 205l-78 93 14 12 82-92z"/>
-</g>
-<!-- chef hat -->
-<path d="M170 310c-24-8-39-29-35-54 3-23 22-39 45-40 3-35 30-61 66-61 35 0 63 26 66 61 24 1 43 19 43 43 0 23-15 43-39 50l-7 44H179z" fill="url(#hat)" stroke="#15151b" stroke-width="10" stroke-linejoin="round" filter="url(#shadow)"/>
-<path d="M183 310c38 18 106 18 146 0l-8 47c-37 20-94 20-130 0z" fill="#dce7df" stroke="#15151b" stroke-width="8"/>
-<path d="M213 222c9-23 26-35 48-35 20 0 38 12 46 34" fill="none" stroke="#ffbf55" stroke-width="5" opacity=".65"/>
-<!-- lower label -->
-<path d="M69 375H443" stroke="#ffe34a" stroke-width="7"/>
-<text x="256" y="424" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="43" font-weight="900" letter-spacing="4" fill="#ffe27a" stroke="#15151b" stroke-width="2" paint-order="stroke">SANTOS</text>
-<text x="256" y="461" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="900" letter-spacing="5" fill="#ffe34a">COOKING HOUSE</text>
-<path d="M126 451h54m152 0h54" stroke="#ed3976" stroke-width="5" stroke-linecap="round"/>
-<path d="M256 475l7 13 14 2-10 10 2 14-13-7-13 7 2-14-10-10 14-2z" fill="#d8b13e"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<title>SANTOS Cooking House System</title><defs>
+<linearGradient id="g" x2="0" y2="1"><stop stop-color="#176747"/><stop offset="1" stop-color="#062d20"/></linearGradient>
+<linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a6"/><stop offset=".45" stop-color="#d8a72e"/><stop offset="1" stop-color="#9a6816"/></linearGradient>
+<linearGradient id="p" x2="0" y2="1"><stop stop-color="#fff5d3"/><stop offset="1" stop-color="#bd8627"/></linearGradient></defs>
+<circle cx="256" cy="256" r="248" fill="#062519" stroke="url(#a)" stroke-width="14"/><circle cx="256" cy="256" r="229" fill="url(#g)" stroke="#f4d77b" stroke-width="4"/>
+<g fill="none" stroke="url(#a)" stroke-width="8" stroke-linecap="round"><path d="M95 333C61 265 79 196 126 158M417 333c34-68 16-137-31-175"/><path d="m116 252-30-14m48-23-26-20m-1 91-31 2m300-36 26-20m-48-23 30-14m1 91 31 2"/></g>
+<g fill="url(#a)" stroke="#70470b" stroke-width="3"><path d="M130 161c-25-25-25-48-7-59 25 13 34 34 28 60-8 14-14 14-21-1z"/><path d="M382 161c25-25 25-48 7-59-25 13-34 34-28 60 8 14 14 14 21-1z"/></g>
+<!-- chef hat --><path d="M176 169c-28-6-42-27-35-51 6-20 24-31 45-29 7-36 34-58 70-58s63 22 70 58c21-2 39 9 45 29 7 24-7 45-35 51l-9 38H185z" fill="#fffdf2" stroke="url(#a)" stroke-width="8"/><path d="M182 174c42 18 106 18 148 0l-7 39c-38 18-96 18-134 0z" fill="#e9e2ce" stroke="#a9781b" stroke-width="5"/>
+<g fill="none" stroke="#fff4d4" stroke-width="10" stroke-linecap="round"><path d="M222 236c-20-22 16-34 0-58m34 57c-18-23 18-36 1-60m33 61c-18-22 18-34 2-58"/></g>
+<path d="m104 317 69-72 36 38 42-57 58 73 33-34 66 52z" fill="#e7eee8" stroke="url(#a)" stroke-width="5" stroke-linejoin="round"/>
+<g stroke="#70470b" stroke-width="7" stroke-linejoin="round"><path d="M168 322h176l-13 82c-3 20-19 33-40 33h-70c-21 0-37-13-40-33z" fill="url(#p)"/><path d="M151 320h210v20H151z" fill="#fff0b3"/><path d="M166 343h-27c-18 0-18 34 0 34h28m179-34h27c18 0 18 34 0 34h-28" fill="none" stroke="url(#a)" stroke-width="12"/></g>
+<path d="M57 452Q256 407 455 452L427 486H85z" fill="url(#a)" stroke="#6f4b0b" stroke-width="5"/>
+<text x="256" y="463" text-anchor="middle" font-family="Georgia,serif" font-size="43" font-weight="bold" letter-spacing="4" fill="#123c29">SANTOS</text><text x="256" y="499" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="bold" letter-spacing="2" fill="#fff5d5">COOKING HOUSE</text></svg>
