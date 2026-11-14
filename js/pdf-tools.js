@@ -1,4 +1,4 @@
-/* Universal PDF tools for every CRPF Mess page.
+/* Universal PDF tools for every Santos Cooking House page.
    Creates a clean print-to-PDF view; the browser's Print dialog can save/share a PDF.
    Does not read, modify, or clear mess data. */
 (function(){

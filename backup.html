@@ -1,10 +1,10 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Backup & Restore | CRPF Mess</title><link rel="stylesheet" href="css/app.css?v=20261109-audit-refresh1"><link rel="stylesheet" href="./assets/command-centre.css?v=20261113-soft3d-buttons">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Backup & Restore | Santos Cooking House</title><link rel="stylesheet" href="css/app.css?v=20261109-audit-refresh1"><link rel="stylesheet" href="./assets/command-centre.css?v=20261113-soft3d-buttons">
 <link rel="manifest" href="./manifest.webmanifest?v=sky-png-1">
-<link rel="icon" type="image/png" href="./icons/crpf-monogram-192.png?v=sky-png-1">
-<link rel="apple-touch-icon" href="./icons/crpf-monogram-192.png?v=sky-png-1">
+<link rel="icon" type="image/png" href="./icons/santos-kangaroo.svg?v=sky-png-1">
+<link rel="apple-touch-icon" href="./icons/santos-kangaroo.svg?v=sky-png-1">
 <link rel="stylesheet" href="./assets/sidebar-boot.css?v=20261114-homeheaderfix">
-</head><body><div class="app"><aside class="sidebar"><div class="brand">🛡️<b>CRPF MESS</b><small>Cooking House System</small></div><nav class="nav"><a href="index.html">▦ Dashboard</a><a href="members.html">👥 Members</a><a href="ration-store.html">📦 Ration Store</a><a href="purchases.html">🛒 Purchases</a><a href="recipes.html">🍲 Recipes</a><a href="making-menu.html">📅 Making Menu</a><a href="mess-staff.html">👨‍🍳 Mess Staff</a><a href="accounts.html">💰 Accounts</a><a href="reports.html">📊 Reports</a><a href="mess-handover.html">🔄 Mess Handover</a><a href="settings.html">⚙️ Settings</a><a class="active" href="backup.html">💾 Backup & Restore</a><a href="software-guide.html">📖 हिन्दी गाइड</a></nav></aside><main class="main"><header class="topbar"><h1>CRPF Mess Management System</h1><span id="dateNow"></span></header><div class="content"><div class="pagehead"><h2>💾 Backup & Restore</h2><div class="muted">Ek hi full backup mein sabhi pages ka data save hoga — Members, Ration, Purchases, Recipes, Menu, Accounts, Staff, Handover aur Reports ke records.</div></div><section class="cards" id="backupStats"><div class="card"><small>Members</small><strong id="members">0</strong></div><div class="card"><small>Ration Items</small><strong id="items">0</strong></div><div class="card"><small>Purchases</small><strong id="purchases">0</strong></div><div class="card"><small>Recipes</small><strong id="recipes">0</strong></div><div class="card"><small>Meal Records</small><strong id="meals">0</strong></div><div class="card"><small>Account Entries</small><strong id="transactions">0</strong></div><div class="card"><small>Mess Staff</small><strong id="staff">0</strong></div><div class="card"><small>Handover Records</small><strong id="handovers">0</strong></div></section><section class="panel"><h3>One Full Backup – Create / Update</h3><p class="muted" style="margin:10px 0 16px">Update Existing Backup dabayein aur phone se apni purani <b>CRPF-Mess-Backup.json</b> file select karein. Us file mein sabhi pages ka latest data overwrite ho jayega. Agar pehli baar hai to Create Backup dabayein.</p><button onclick="updateExistingBackup()">🔄 Update Existing Backup</button><button class="alt" style="margin-left:8px" onclick="createBackup()">💾 Create New Backup</button><p class="muted" style="margin-top:12px">Member photos aur browser mein saved tamam app records bhi backup mein shamil hain.</p></section>
-<section class="panel" style="margin-top:14px"><h3>Restore Full Backup</h3><p class="muted" style="margin:10px 0 16px">Restore karne par is device ka current CRPF Mess data backup wale data se replace ho jayega. Pehle current backup bana lein.</p><input id="backupFile" type="file" accept=".json,application/json"><button class="danger" style="margin-top:12px" onclick="restore()">Restore Selected Backup</button><p id="message" class="muted" style="margin-top:12px"></p></section></div></main></div><script>
+</head><body><div class="app"><aside class="sidebar"><div class="brand">🛡️<b>SANTOS COOKING HOUSE</b><small>Cooking House System</small></div><nav class="nav"><a href="index.html">▦ Dashboard</a><a href="members.html">👥 Members</a><a href="ration-store.html">📦 Ration Store</a><a href="purchases.html">🛒 Purchases</a><a href="recipes.html">🍲 Recipes</a><a href="making-menu.html">📅 Making Menu</a><a href="mess-staff.html">👨‍🍳 Mess Staff</a><a href="accounts.html">💰 Accounts</a><a href="reports.html">📊 Reports</a><a href="mess-handover.html">🔄 Mess Handover</a><a href="settings.html">⚙️ Settings</a><a class="active" href="backup.html">💾 Backup & Restore</a><a href="software-guide.html">📖 हिन्दी गाइड</a></nav></aside><main class="main"><header class="topbar"><h1>SANTOS Cooking House System</h1><span id="dateNow"></span></header><div class="content"><div class="pagehead"><h2>💾 Backup & Restore</h2><div class="muted">Ek hi full backup mein sabhi pages ka data save hoga — Members, Ration, Purchases, Recipes, Menu, Accounts, Staff, Handover aur Reports ke records.</div></div><section class="cards" id="backupStats"><div class="card"><small>Members</small><strong id="members">0</strong></div><div class="card"><small>Ration Items</small><strong id="items">0</strong></div><div class="card"><small>Purchases</small><strong id="purchases">0</strong></div><div class="card"><small>Recipes</small><strong id="recipes">0</strong></div><div class="card"><small>Meal Records</small><strong id="meals">0</strong></div><div class="card"><small>Account Entries</small><strong id="transactions">0</strong></div><div class="card"><small>Mess Staff</small><strong id="staff">0</strong></div><div class="card"><small>Handover Records</small><strong id="handovers">0</strong></div></section><section class="panel"><h3>One Full Backup – Create / Update</h3><p class="muted" style="margin:10px 0 16px">Update Existing Backup dabayein aur phone se apni purani <b>SANTOS-Mess-Backup.json</b> file select karein. Us file mein sabhi pages ka latest data overwrite ho jayega. Agar pehli baar hai to Create Backup dabayein.</p><button onclick="updateExistingBackup()">🔄 Update Existing Backup</button><button class="alt" style="margin-left:8px" onclick="createBackup()">💾 Create New Backup</button><p class="muted" style="margin-top:12px">Member photos aur browser mein saved tamam app records bhi backup mein shamil hain.</p></section>
+<section class="panel" style="margin-top:14px"><h3>Restore Full Backup</h3><p class="muted" style="margin:10px 0 16px">Restore karne par is device ka current Santos Cooking House data backup wale data se replace ho jayega. Pehle current backup bana lein.</p><input id="backupFile" type="file" accept=".json,application/json"><button class="danger" style="margin-top:12px" onclick="restore()">Restore Selected Backup</button><p id="message" class="muted" style="margin-top:12px"></p></section></div></main></div><script>
 const KEY="crpfMessData";
 const $=id=>document.getElementById(id);
 function readAppData(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}}
@@ -13,9 +13,9 @@ function collectFullBackup(){
  let appData={};
  try{appData=JSON.parse(saved||"{}")}catch(e){}
  return {
-  backupFormat:"CRPF-MESS-FULL-BACKUP",
+  backupFormat:"SANTOS-MESS-FULL-BACKUP",
   backupVersion:2,
-  appName:"CRPF Mess Management System",
+  appName:"SANTOS Cooking House System",
   createdAt:new Date().toISOString(),
   storage:{[KEY]:saved||JSON.stringify(appData)},
   appData
@@ -43,10 +43,10 @@ function backupBlob(){
  return new Blob([JSON.stringify(snapshot,null,2)],{type:"application/json"});
 }
 async function updateExistingBackup(){
- const blob=backupBlob(),fixedName="CRPF-Mess-Backup.json";
+ const blob=backupBlob(),fixedName="SANTOS-Mess-Backup.json";
  try{
   if(window.showOpenFilePicker){
-   const handles=await window.showOpenFilePicker({multiple:false,types:[{description:"CRPF Mess Backup JSON",accept:{"application/json":[".json"]}}]});
+   const handles=await window.showOpenFilePicker({multiple:false,types:[{description:"Santos Cooking House Backup JSON",accept:{"application/json":[".json"]}}]});
    const handle=handles[0];
    if(!handle)return;
    const writable=await handle.createWritable();
@@ -56,7 +56,7 @@ async function updateExistingBackup(){
    return;
   }
   if(window.showSaveFilePicker){
-   const handle=await window.showSaveFilePicker({suggestedName:fixedName,types:[{description:"CRPF Mess Backup JSON",accept:{"application/json":[".json"]}}]});
+   const handle=await window.showSaveFilePicker({suggestedName:fixedName,types:[{description:"Santos Cooking House Backup JSON",accept:{"application/json":[".json"]}}]});
    const writable=await handle.createWritable();
    await writable.write(blob);
    await writable.close();
@@ -71,22 +71,22 @@ async function updateExistingBackup(){
  }
 }
 async function createBackup(){
- const blob=backupBlob(),fixedName="CRPF-Mess-Backup.json";
+ const blob=backupBlob(),fixedName="SANTOS-Mess-Backup.json";
  try{
   const file=new File([blob],fixedName,{type:"application/json"});
   if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-   await navigator.share({files:[file],title:"CRPF Mess Full Backup",text:"CRPF Mess ka complete data backup"});
+   await navigator.share({files:[file],title:"Santos Cooking House Full Backup",text:"Santos Cooking House ka complete data backup"});
    setMessage("✓ Backup file share/save ke liye taiyar hai. Share menu mein Save to Files/Downloads chunein.");
    return;
   }
   downloadBackup(blob,fixedName);
-  setMessage("✓ Backup download shuru ho gaya. Phone ke Downloads folder mein CRPF-Mess-Backup.json check karein.");
+  setMessage("✓ Backup download shuru ho gaya. Phone ke Downloads folder mein SANTOS-Mess-Backup.json check karein.");
  }catch(e){
   if(e.name==="AbortError")return;
   // Android share sheets can reject with Permission denied. Fall back to a normal file download.
   try{
    downloadBackup(blob,fixedName);
-   setMessage("✓ Backup download dobara try kiya gaya. Phone ke Downloads folder mein CRPF-Mess-Backup.json check karein. Agar prompt aaye to Allow/Download chunein.");
+   setMessage("✓ Backup download dobara try kiya gaya. Phone ke Downloads folder mein SANTOS-Mess-Backup.json check karein. Agar prompt aaye to Allow/Download chunein.");
   }catch(downloadError){
    setMessage("Backup save nahi hua: "+downloadError.message+". Chrome Settings > Site settings > Automatic downloads allow karein, phir dobara try karein.",true);
   }
@@ -105,12 +105,12 @@ function restore(){
  reader.onload=()=>{
   let parsed,data=null;
   try{parsed=JSON.parse(reader.result)}catch(e){setMessage("Backup JSON invalid hai. Original file safe rakhein.",true);return}
-  if(parsed&&parsed.backupFormat==="CRPF-MESS-FULL-BACKUP"&&parsed.storage&&typeof parsed.storage[KEY]==="string"){
+  if(parsed&&parsed.backupFormat==="SANTOS-MESS-FULL-BACKUP"&&parsed.storage&&typeof parsed.storage[KEY]==="string"){
    try{data=JSON.parse(parsed.storage[KEY])}catch(e){setMessage("Backup ke andar app data parse nahi hua.",true);return}
   }
   if(!data&&parsed&&parsed.appData&&typeof parsed.appData==="object"&&!Array.isArray(parsed.appData))data=parsed.appData;
   if(!data&&parsed&&typeof parsed==="object"&&!Array.isArray(parsed)&&!parsed.backupFormat)data=parsed;
-  if(!data||typeof data!=="object"||Array.isArray(data)){setMessage("Is file mein CRPF Mess data nahi mila. File delete na karein.",true);return}
+  if(!data||typeof data!=="object"||Array.isArray(data)){setMessage("Is file mein Santos Cooking House data nahi mila. File delete na karein.",true);return}
   const count=k=>Array.isArray(data[k])?data[k].length:0;
   const summary="Members "+count("members")+" | Staff "+count("staff")+" | Ration "+count("ration")+" | Purchases "+count("purchases")+" | Recipes "+count("recipes")+" | Meals "+count("mealRecords")+" | Accounts "+count("transactions");
   const fullText=JSON.stringify(data);

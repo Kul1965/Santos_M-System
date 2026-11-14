@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10563e">
 <link rel="manifest" href="./manifest.webmanifest?v=sky-png-1">
-<link rel="apple-touch-icon" href="./icons/crpf-monogram-192.png?v=sky-png-1">
+<link rel="apple-touch-icon" href="./icons/santos-kangaroo.svg?v=sky-png-1">
 <!-- Prevent the mobile/tablet sidebar from flashing before shared navigation initializes. -->
 <style id="sidebar-first-paint-fix">
 @media(max-width:1400px){
@@ -26,7 +26,7 @@
   }
 }
 </style>
-<title>CRPF Mess Management System</title>
+<title>SANTOS Cooking House System</title>
 
 <style>
 :root {
@@ -279,7 +279,7 @@ td{
 }
 
 
-/* CRPF branded app header and mobile navigation */
+/* SANTOS branded app header and mobile navigation */
 .brand-lockup{display:flex;align-items:center;gap:14px;min-width:0}
 .crpf-logo{width:76px;height:84px;object-fit:contain;flex:0 0 auto}
 .brand-divider{height:76px;width:2px;background:#7ab49a;opacity:.8;flex:0 0 2px}
@@ -473,7 +473,7 @@ body.mobile-nav-open{overflow:hidden!important}
 </style>
 
 <style id="nco-so-colour-consistency">
-/* Home: Mess, NCO and SO use the same soft mint raised-pill style */
+/* Home: Mess, Mess Manager and SO use the same soft mint raised-pill style */
 .top-info .info-pill,
 .topbar .top-info .info-pill,
 .top-info .mess-name-pill,
@@ -580,7 +580,7 @@ body.mobile-nav-open{overflow:hidden!important}
 </style>
 
 <style id="home-member-header-match">
-/* HOME HEADER: match the Members page single-line Mess/NCO/SO layout */
+/* HOME HEADER: match the Members page single-line Mess/Mess Manager/SO layout */
 .topbar{
  display:flex!important;flex-direction:row!important;align-items:center!important;
  justify-content:space-between!important;gap:12px!important;flex-wrap:nowrap!important;
@@ -620,7 +620,7 @@ body.mobile-nav-open{overflow:hidden!important}
 }
 </style>
 <style id="mess-pill-mint-match">
-/* Match Mess pill to the same mint finish as NCO and SO */
+/* Match Mess pill to the same mint finish as Mess Manager and SO */
 .topbar .top-info .mess-name-pill,
 .topbar .top-info .nco-pill,
 .topbar .top-info .so-pill{
@@ -635,7 +635,7 @@ body.mobile-nav-open{overflow:hidden!important}
 .topbar .top-info .so-pill strong{color:#124d35!important;-webkit-text-fill-color:#124d35!important;font-weight:800!important}
 </style>
 <link rel="stylesheet" href="./assets/sidebar-boot.css?v=20261114-homeheaderfix">
-<link rel="icon" type="image/png" href="./icons/crpf-monogram-192.png?v=sky-png-1">
+<link rel="icon" type="image/png" href="./icons/santos-kangaroo.svg?v=sky-png-1">
 </head>
 
 <body>
@@ -644,8 +644,8 @@ body.mobile-nav-open{overflow:hidden!important}
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="brand">
-    <div class="side-emblem-row"><img class="sidebar-crpf-logo" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/CRPF_Logo.svg" alt="CRPF monogram"><span class="side-flag flag-art" aria-label="Indian flag"><i></i><i></i><i></i><b>✺</b></span></div>
-    <h2>CRPF MESS</h2>
+    <div class="side-emblem-row"><img class="sidebar-crpf-logo" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/SANTOS_Logo.svg" alt="SANTOS monogram"><span class="side-flag flag-art" aria-label="Indian flag"><i></i><i></i><i></i><b>✺</b></span></div>
+    <h2>SANTOS COOKING HOUSE</h2>
     <p>Cooking House System</p>
   </div>
 
@@ -671,10 +671,10 @@ body.mobile-nav-open{overflow:hidden!important}
 
   <header class="topbar">
     <div class="heading brand-lockup">
-      <img class="crpf-logo" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/CRPF_Logo.svg" alt="CRPF emblem">
+      <img class="crpf-logo" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/SANTOS_Logo.svg" alt="SANTOS emblem">
       <span class="brand-divider"></span>
       <div class="brand-title">
-        <h1>CRPF</h1>
+        <h1>SANTOS</h1>
         <h2>Cooking House System</h2><div class="dashboard-date" id="dateDisplay"></div>
         <div class="tricolour-line"><i></i><i></i><i></i></div>
       </div>
@@ -682,9 +682,9 @@ body.mobile-nav-open{overflow:hidden!important}
     </div>
 
     <div class="top-info">
-      <div class="info-pill mess-name-pill">🏛️ Mess: <span id="messName">A Coy (CRPF)</span></div>
-      <div class="info-pill nco-pill">👤 Mess NCO: <strong id="messNco">Not Set</strong></div>
-      <div class="info-pill so-pill">📋 Mess SO: <strong id="messSo">Not Set</strong></div>
+      <div class="info-pill mess-name-pill">🏛️ Mess: <span id="messName">A Coy (SANTOS)</span></div>
+      <div class="info-pill nco-pill">👤 Mess Manager: <strong id="messNco">Not Set</strong></div>
+      <div class="info-pill so-pill">📋 Head Cook: <strong id="messSo">Not Set</strong></div>
     </div>
   </header>
 
@@ -888,14 +888,14 @@ body.mobile-nav-open{overflow:hidden!important}
         <h3>🏛️ Mess Information</h3>
         <div class="balance-row">
           <span>Mess Name</span>
-          <b id="messInfo">A Coy (CRPF)</b>
+          <b id="messInfo">A Coy (SANTOS)</b>
         </div>
         <div class="balance-row">
-          <span>Mess NCO</span>
+          <span>Mess Manager</span>
           <b id="messNcoInfo">Not Set</b>
         </div>
         <div class="balance-row">
-          <span>Mess SO</span>
+          <span>Head Cook</span>
           <b id="messSoInfo">Not Set</b>
         </div>
         <div class="balance-row">
@@ -909,7 +909,7 @@ body.mobile-nav-open{overflow:hidden!important}
   </div>
 
   <footer class="footer">
-    CRPF Mess Management System | Cooking House Management
+    SANTOS Cooking House System | Cooking House Management
   </footer>
 </main>
 </div>
@@ -1046,7 +1046,7 @@ function loadDashboard() {
   set("balance",money(cashAvailable));
   
   const settings=data.settings&&typeof data.settings==="object"?data.settings:{};
-  const name=settings.messName||"A Coy (CRPF)";
+  const name=settings.messName||"A Coy (SANTOS)";
   const activeStaff=(data.staff||[]).filter(x=>String(x.status||"Active").toLowerCase()==="active");
   // Show every active staff member assigned to each role, not only the first match.
   const nco=activeStaff.filter(x=>String(x.duty||"").trim().toLowerCase()==="mess nco").map(x=>x.name).filter(Boolean).join(", ")||"Not Set";
@@ -1115,7 +1115,7 @@ loadDashboard();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
     navigator.serviceWorker.register("./service-worker.js").catch(function (error) {
-      console.warn("CRPF Mess offline support could not be enabled:", error);
+      console.warn("Santos Cooking House offline support could not be enabled:", error);
     });
   });
 }
