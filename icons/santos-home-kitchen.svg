@@ -3,13 +3,13 @@
 <desc id="desc">A colorful chef hat and cooking flames with a spoon and fork inside a circular Home Kitchen Good Food badge.</desc>
 <defs>
  <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb02e"/><stop offset=".48" stop-color="#ffe64a"/><stop offset="1" stop-color="#ed2474"/></linearGradient>
- <linearGradient id="hat" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff9b32"/><stop offset=".48" stop-color="#ff4c54"/><stop offset="1" stop-color="#d72b91"/></linearGradient>
- <linearGradient id="fire" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff02f"/><stop offset=".52" stop-color="#ff9b20"/><stop offset="1" stop-color="#f12b70"/></linearGradient>
+ <linearGradient id="hat" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset=".48" stop-color="#f4f7f5"/><stop offset="1" stop-color="#cbd8d0"/></linearGradient>
+ <linearGradient id="fire" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe58a"/><stop offset=".52" stop-color="#e0b53b"/><stop offset="1" stop-color="#a77b18"/></linearGradient>
  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dy="5"/><feComponentTransfer><feFuncA type="linear" slope=".45"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
 <circle cx="256" cy="258" r="222" fill="#11151d" fill-opacity=".96" stroke="url(#ring)" stroke-width="8"/>
 <circle cx="256" cy="258" r="202" fill="none" stroke="#ffe34a" stroke-width="5"/>
-<path d="M89 260C95 226 111 198 130 180M423 260c-6-34-22-62-41-80" fill="none" stroke="#ed3976" stroke-width="5" stroke-linecap="round"/>
+<path d="M89 260C95 226 111 198 130 180M423 260c-6-34-22-62-41-80" fill="none" stroke="#d8b13e" stroke-width="5" stroke-linecap="round"/>
 <!-- flames -->
 <path d="M174 207c-29-42 9-73 8-111 25 22 28 44 20 65 31-31 18-77 54-119 8 42 26 54 21 88 20-20 20-45 35-65 16 36 2 63-4 84 27-19 33-41 33-61 28 41 9 75-8 100l-14 25H190z" fill="url(#fire)" stroke="#15151b" stroke-width="7" stroke-linejoin="round"/>
 <!-- spoon and fork -->
@@ -20,12 +20,12 @@
 </g>
 <!-- chef hat -->
 <path d="M170 310c-24-8-39-29-35-54 3-23 22-39 45-40 3-35 30-61 66-61 35 0 63 26 66 61 24 1 43 19 43 43 0 23-15 43-39 50l-7 44H179z" fill="url(#hat)" stroke="#15151b" stroke-width="10" stroke-linejoin="round" filter="url(#shadow)"/>
-<path d="M183 310c38 18 106 18 146 0l-8 47c-37 20-94 20-130 0z" fill="#e33b78" stroke="#15151b" stroke-width="8"/>
+<path d="M183 310c38 18 106 18 146 0l-8 47c-37 20-94 20-130 0z" fill="#dce7df" stroke="#15151b" stroke-width="8"/>
 <path d="M213 222c9-23 26-35 48-35 20 0 38 12 46 34" fill="none" stroke="#ffbf55" stroke-width="5" opacity=".65"/>
 <!-- lower label -->
 <path d="M69 375H443" stroke="#ffe34a" stroke-width="7"/>
-<text x="256" y="424" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="43" font-weight="900" letter-spacing="4" fill="#f34b80" stroke="#15151b" stroke-width="2" paint-order="stroke">HOME KITCHEN</text>
-<text x="256" y="461" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="900" letter-spacing="5" fill="#ffe34a">GOOD FOOD</text>
+<text x="256" y="424" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="43" font-weight="900" letter-spacing="4" fill="#ffe27a" stroke="#15151b" stroke-width="2" paint-order="stroke">SANTOS</text>
+<text x="256" y="461" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="900" letter-spacing="5" fill="#ffe34a">COOKING HOUSE</text>
 <path d="M126 451h54m152 0h54" stroke="#ed3976" stroke-width="5" stroke-linecap="round"/>
-<path d="M256 475l7 13 14 2-10 10 2 14-13-7-13 7 2-14-10-10 14-2z" fill="#ed3976"/>
+<path d="M256 475l7 13 14 2-10 10 2 14-13-7-13 7 2-14-10-10 14-2z" fill="#d8b13e"/>
 </svg>
