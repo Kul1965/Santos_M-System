@@ -4,7 +4,7 @@
  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}};
  const write=d=>{try{localStorage.setItem(KEY,JSON.stringify(d));return true}catch(e){alert("Data save nahi hua. Browser storage full ho sakta hai.");return false}};
  const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
- const money=v=>"Rs "+Number(v||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+ const money=v=>"A$"+Number(v||0).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2});
  function showNotice(title,message,kind){
   const wrap=document.createElement("div");wrap.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.58);display:grid;place-items:center;padding:18px";
   const box=document.createElement("div");box.style.cssText="width:min(100%,390px);background:#fff;border-radius:20px;padding:24px 20px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.3);font-family:Arial,sans-serif";
