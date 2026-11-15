@@ -507,6 +507,7 @@ function setMemberFilter(status){
   <td><span class="status ${(m.status||"Active")==="Inactive"?"inactive":""}">${esc(m.status||"Active")}</span></td>
   <td class="no-print"><div class="actions">
    <button class="secondary" onclick="viewMember('${m.id}')">View</button>
+    <button class="primary" onclick="startEatFood('${m.id}')">🥝 Eat Food</button>
    <button class="primary" onclick="editMember('${m.id}')">Edit</button>
    <button class="danger" onclick="deleteMember('${m.id}')">Delete</button>
   </div></td>
@@ -878,6 +879,7 @@ function whatsAppMember(){
 }
 
 function localDateValue(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
+function startEatFood(id){viewMember(id);openEatFood()}
 function openEatFood(){
  const m=members.find(x=>String(x.id)===String(viewingId));if(!m){showToast("Member details nahi mile.","error");return}
  const d=getData(),recipes=Array.isArray(d.recipes)?d.recipes:[];
