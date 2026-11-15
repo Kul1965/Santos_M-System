@@ -874,6 +874,68 @@ function whatsAppMember(){
  const msg="Namaste "+m.name+" ji,\\nSantos Cooking House Account Statement\\nTotal Meal Charge: "+money(mealTotal)+"\\nTotal Mess Cutting Paid: "+money(paid)+"\\nUnpaid Due: "+money(due)+"\\nCredit Balance: "+money(credit)+"\\nStatus: "+status+"\\nTransfer: "+transferText+"\\nFinal Mess Bill: "+money(finalBill)+"\\nFinal Bill Status: "+finalBillStatus+"\\n\\nDhanyavaad.";
  window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg),"_blank");
 }
+
+function localDateValue(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
+function openEatFood(){
+ const m=members.find(x=>String(x.id)===String(viewingId));if(!m){showToast("Member details nahi mile.","error");return}
+ const d=getData(),recipes=Array.isArray(d.recipes)?d.recipes:[];
+ document.getElementById("eatFoodMember").innerHTML="<b>Member:</b> "+esc(m.name)+" · "+esc(m.idNo??m.forceNo)+"<br><small>Selected food ka charge isi member ke account mein add hoga.</small>";
+ const now=new Date();document.getElementById("eatFoodDate").value=localDateValue();document.getElementById("eatFoodTime").value=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+ document.getElementById("eatFoodMeal").value="Breakfast";document.getElementById("eatFoodType").value="Veg";document.getElementById("eatFoodNotes").value="";
+ document.getElementById("eatFoodRecipes").innerHTML=recipes.length?recipes.map(r=>'<label class="food-recipe-option"><input type="checkbox" class="eat-recipe-check" value="'+esc(r.id)+'"><span><b>'+esc(r.name||"Recipe")+'</b><br><small>'+esc(r.foodType||"Both")+' · '+money(r.costPerServing||r.totalCost||0)+' / serving</small></span><input type="number" class="eat-recipe-servings" data-recipe="'+esc(r.id)+'" min="0.25" step="0.25" value="1" aria-label="Servings" disabled></label>').join(""):'<p>No recipes found. Pehle Recipes page mein recipes aur ingredients save karein.</p>';
+ document.querySelectorAll(".eat-recipe-check").forEach(ch=>ch.addEventListener("change",()=>{const q=[...document.querySelectorAll(".eat-recipe-servings")].find(x=>x.dataset.recipe===ch.value);if(q)q.disabled=!ch.checked}));
+ document.getElementById("eatFoodModal").style.display="block";
+}
+function closeEatFood(){document.getElementById("eatFoodModal").style.display="none"}
+function saveEatFood(){
+ const d=getData(),m=(d.members||[]).find(x=>String(x.id)===String(viewingId));if(!m){showToast("Member nahi mila.","error");return}
+ const date=document.getElementById("eatFoodDate").value,time=document.getElementById("eatFoodTime").value,mealType=document.getElementById("eatFoodMeal").value,foodType=document.getElementById("eatFoodType").value;
+ if(!date||!time){showToast("Date aur time select karein.","warning");return}
+ const selected=[...document.querySelectorAll(".eat-recipe-check:checked")].map(ch=>{const r=(d.recipes||[]).find(x=>String(x.id)===String(ch.value)),q=[...document.querySelectorAll(".eat-recipe-servings")].find(x=>x.dataset.recipe===ch.value);return {recipe:r,servings:Number(q?.value||1)}}).filter(x=>x.recipe);
+ if(!selected.length){showToast("Kam se kam ek recipe select karein.","warning");return}
+ if(selected.some(x=>!Number.isFinite(x.servings)||x.servings<=0)){showToast("Har dish ki serving quantity sahi dalein.","warning");return}
+ const usageMap=new Map();let total=0;
+ const factor=u=>{u=String(u||"").toLowerCase();if(["g","gram","grams"].includes(u))return ["w",1];if(["kg","kgs"].includes(u))return ["w",1000];if(u==="ml")return ["v",1];if(["l","ltr","litre","liter"].includes(u))return ["v",1000];if(["pcs","pc","piece","pieces"].includes(u))return ["c",1];return null};
+ const unitConvert=(q,from,to)=>{const a=factor(from),b=factor(to);return !a||!b||a[0]!==b[0]?null:Number(q)*a[1]/b[1]};
+ const ration=Array.isArray(d.ration)?d.ration:[];
+ for(const x of selected){
+  const r=x.recipe,cost=Number(r.costPerServing??r.totalCost??0);total+=cost*x.servings;
+  for(const ing of (r.ingredients||[])){
+   const item=ration.find(y=>String(y.id)===String(ing.itemId));if(!item){showToast("Recipe "+r.name+": ration item nahi mila. Ingredients check karein.","error");return}
+   const qty=unitConvert(Number(ing.quantity||0)*x.servings,ing.unit||item.unit,item.unit);
+   if(qty===null){showToast(item.name+" ka unit match nahi ho raha. Recipe check karein.","error");return}
+   const old=usageMap.get(String(item.id))||{itemId:item.id,itemName:item.name,quantity:0,unit:item.unit,cost:0};old.quantity+=qty;old.cost+=qty*Number(item.price||0);usageMap.set(String(item.id),old);
+  }
+ }
+ const dishes=selected.map(x=>x.recipe.name||"Recipe"),details=selected.map(x=>({recipeId:x.recipe.id,name:x.recipe.name||"Recipe",servings:x.servings,cost:Number(x.recipe.costPerServing??x.recipe.totalCost??0)*x.servings}));
+ const record={id:"FOOD"+Date.now(),date,time,mealType,foodType,recipeIds:selected.map(x=>x.recipe.id),recipeNames:dishes,memberIds:[m.id],memberSnapshots:[{id:m.id,name:m.name,idNo:m.idNo??m.forceNo,dishes,dishDetails:details,foodChoice:foodType,charge:total}],totalCost:total,chargePerMember:total,ingredientUsage:[...usageMap.values()],rationDeducted:false,foodEntryVersion:1,notes:document.getElementById("eatFoodNotes").value.trim(),createdAt:new Date().toISOString()};
+ d.mealRecords=Array.isArray(d.mealRecords)?d.mealRecords:[];d.mealRecords.push(record);
+ try{saveData(d)}catch(e){showToast("Food record save nahi hua. Storage check karein.","error");return}
+ closeEatFood();renderFoodRecords();refresh();viewMember(m.id);showToast("Food saved. "+money(total)+" member ke bill mein add hua. Ration abhi pending hai.","success");
+}
+function renderFoodRecords(){
+ const d=getData(),rows=(d.mealRecords||[]).filter(r=>r.foodEntryVersion===1).slice().sort((a,b)=>(String(b.date||"")+" "+String(b.time||"")).localeCompare(String(a.date||"")+" "+String(a.time||"")));
+ const body=document.getElementById("foodRecordRows"),empty=document.getElementById("foodRecordsEmpty");if(!body||!empty)return;
+ body.innerHTML=rows.map(r=>{const snap=(r.memberSnapshots||[])[0]||{},member=(d.members||[]).find(m=>String(m.id)===String(snap.id||r.memberIds?.[0]));return '<tr><td>'+esc(r.date)+'<br>'+esc(r.time||"")+'</td><td>'+esc(snap.name||member?.name||"Member")+'</td><td>'+esc(r.mealType||"")+'</td><td>'+esc((r.recipeNames||[]).join(" + "))+'</td><td>'+esc(r.foodType||"")+'</td><td>'+money(r.totalCost)+'</td><td class="'+(r.rationDeducted?"food-status-done":"food-status-pending")+'">'+(r.rationDeducted?"✓ Deducted":"● Pending")+'</td></tr>'}).join("");
+ empty.style.display=rows.length?"none":"block";
+}
+function deductPendingFoodRation(){
+ const d=getData(),pending=(d.mealRecords||[]).filter(r=>r.foodEntryVersion===1&&!r.rationDeducted);
+ if(!pending.length){showToast("Koi pending food ration nahi hai.","info");return}
+ const totals=new Map();
+ pending.forEach(r=>(r.ingredientUsage||[]).forEach(x=>{const old=totals.get(String(x.itemId))||{itemId:x.itemId,itemName:x.itemName,quantity:0,unit:x.unit};old.quantity+=Number(x.quantity||0);totals.set(String(x.itemId),old)}));
+ const errors=[];totals.forEach(x=>{const item=(d.ration||[]).find(y=>String(y.id)===String(x.itemId));if(!item)errors.push(x.itemName+": store item missing");else if(Number(item.quantity||0)+1e-9<x.quantity)errors.push(x.itemName+": required "+x.quantity.toFixed(3)+" "+x.unit+", available "+Number(item.quantity||0)+" "+item.unit)});
+ if(errors.length){showToast(errors.join(" | "),"error");return}
+ const totalCharge=pending.reduce((s,r)=>s+Number(r.totalCost||0),0);
+ if(!confirm(pending.length+" food entries ka ration deduct hoga. Member bills mein "+money(totalCharge)+" add hai. Confirm karein?"))return;
+ const date=localDateValue();totals.forEach(x=>{const item=d.ration.find(y=>String(y.id)===String(x.itemId));item.quantity=Number(item.quantity||0)-x.quantity});
+ d.stockMovements=Array.isArray(d.stockMovements)?d.stockMovements:[];
+ totals.forEach(x=>d.stockMovements.push({id:"FOODOUT"+Date.now()+Math.random().toString(16).slice(2),date,type:"meal-consumption",itemId:x.itemId,itemName:x.itemName,quantity:x.quantity,unit:x.unit,reference:"Member Eat Food — "+pending.length+" entries"}));
+ pending.forEach(r=>{r.rationDeducted=true;r.rationDeductedAt=new Date().toISOString()});
+ try{saveData(d)}catch(e){showToast("Ration deduction save nahi hua. Dobara try karein.","error");return}
+ renderFoodRecords();refresh();if(viewingId)viewMember(viewingId);showToast("Ration deducted successfully. Food history safe hai.","success");
+}
+
 function closeView(){document.getElementById("viewModal").style.display="none"}
 function printList(){
  document.getElementById("printMess").textContent=
@@ -954,6 +1016,7 @@ document.getElementById("leaveRecordType").addEventListener("change",syncLeaveRe
 document.getElementById("date").textContent=new Date().toLocaleDateString();
 document.getElementById("addMemberBtn").addEventListener("click",()=>openForm());
 refresh();
+renderFoodRecords();
 </script>
 <script src="js/pdf-tools.js?v=20261108-pdf-title8"></script>
 <script src="js/shared-header.js?v=20261114-light-mint-fixed2"></script>
