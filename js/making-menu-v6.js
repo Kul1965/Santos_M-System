@@ -15,7 +15,7 @@ const activeMembers=()=>((read().members)||[]).filter(m=>String(m.status||"Activ
 const recipes=()=>Array.isArray(read().recipes)?read().recipes:[];
 const ration=()=>Array.isArray(read().ration)?read().ration:[];
 const staff=()=>Array.isArray(read().staff)?read().staff:[];
-let chosenRecipes=[],chosenMembers=[],allocation={},memberSearch="";
+let chosenRecipes=[],chosenMembers=[],pendingMembers=[],allocation={},memberSearch="";
 function notify(msg){const n=$("mmNotice");n.textContent=msg;n.hidden=false;setTimeout(()=>{n.hidden=true},4500)}
 function currentState(){return read()}
 function recipeCost(r){
@@ -39,7 +39,7 @@ function renderRecipes(){
 function renderMemberPicker(){
  const list=activeMembers().filter(m=>(String(m.name||"")+" "+String(m.forceNo||m.forceNumber||"")).toLowerCase().includes(memberSearch));
  $("memberPicker").innerHTML=list.length?list.map(m=>{
-  const id=String(m.id),on=chosenMembers.includes(id);
+  const id=String(m.id),on=pendingMembers.includes(id);
   return '<label class="mm-pick '+(on?"is-on":"")+'"><input type="checkbox" class="member-check" value="'+esc(id)+'" '+(on?"checked":"")+'> <span class="mm-pick-name">'+esc(m.name||"Member")+'</span><small>'+esc(m.rank||"")+' '+esc(m.forceNo||m.forceNumber||"")+'</small></label>';
  }).join(""):'<p class="mm-help">Is search mein active member nahi mila.</p>';
  $("memberCount").textContent=chosenMembers.length+" selected";
@@ -105,9 +105,8 @@ function update(){
  renderRecipes();renderMemberPicker();renderMemberDishes();calculate();
 }
 function addMembers(){
- const checks=[...document.querySelectorAll(".member-check:checked")];
- checks.forEach(x=>{const id=String(x.value);if(!chosenMembers.includes(id)){chosenMembers.push(id);allocation[id]={};}});
- update();
+ pendingMembers.forEach(id=>{if(!chosenMembers.includes(id)){chosenMembers.push(id);allocation[id]={};}});
+ pendingMembers=[];update();
 }
 function saveMeal(){
  const date=$("mealDate").value,meal=$("mealType").value,d=currentState();
@@ -133,7 +132,7 @@ function saveMeal(){
  usage.forEach(u=>d.stockMovements.push({id:"OUT"+Date.now()+Math.random().toString(16).slice(2),date,type:"meal-consumption",itemId:u.itemId,itemName:u.name,quantity:u.quantity,unit:u.unit,reference:meal+" — "+recipeNames.join(" + "),memberCount:snapshots.length}));
  if(!write(d))return;
  notify("Meal saved. Member-wise cost aur ration deduction record ho gaya.");
- chosenRecipes=[];chosenMembers=[];allocation={};update();renderRecords();
+ chosenRecipes=[];chosenMembers=[];pendingMembers=[];allocation={};update();renderRecords();renderRecordOptions();
 }
 function renderRecords(){
  const rows=(read().mealRecords||[]).slice().sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
@@ -161,7 +160,7 @@ function sendWhatsApp(){
 $("mealDate").value=today();$("mealDay").textContent=dayName(today());
 $("mealDate").addEventListener("change",()=>{$("mealDay").textContent=dayName($("mealDate").value)});
 $("recipePicker").addEventListener("change",e=>{if(!e.target.matches(".recipe-check"))return;const id=String(e.target.value);if(e.target.checked){if(!chosenRecipes.includes(id))chosenRecipes.push(id)}else chosenRecipes=chosenRecipes.filter(x=>x!==id);update()});
-$("memberPicker").addEventListener("change",e=>{if(e.target.matches(".member-check"))renderMemberPicker()});
+$("memberPicker").addEventListener("change",e=>{if(!e.target.matches(".member-check"))return;const id=String(e.target.value);if(e.target.checked){if(!pendingMembers.includes(id))pendingMembers.push(id)}else pendingMembers=pendingMembers.filter(x=>x!==id);$("memberCount").textContent=(chosenMembers.length+pendingMembers.length)+" selected (including pending)"});
 $("memberSearch").addEventListener("input",e=>{memberSearch=e.target.value.toLowerCase();renderMemberPicker()});
 $("addMembers").addEventListener("click",addMembers);
 $("memberDishCards").addEventListener("change",e=>{
