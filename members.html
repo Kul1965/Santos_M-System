@@ -387,7 +387,7 @@ td.no-print{white-space:nowrap}
  </div>
 </div>
 
-<div class="modal" id="eatFoodModal"><div class="modal-box"><div class="modal-head"><h3>🥝 Eat Food — Member Meal Entry</h3><button class="close" type="button" onclick="closeEatFood()">✕</button></div><div id="eatFoodMember" class="meal-entry"></div><div class="form-grid"><div class="field"><label>Date *</label><input id="eatFoodDate" type="date"></div><div class="field"><label>Time *</label><input id="eatFoodTime" type="time"></div><div class="field"><label>Meal Time *</label><select id="eatFoodMeal"><option>Morning Tea</option><option>Breakfast</option><option>Midday Tea</option><option>Lunch</option><option>Evening Tea</option><option>Dinner</option></select></div><div class="field"><label>Food Type</label><select id="eatFoodType"><option>Veg</option><option>Non-Veg</option><option>Both</option></select></div><div class="field full"><label>Choose Recipes / Dishes (multiple allowed)</label><div id="eatFoodRecipes" class="food-recipe-list"></div></div><div class="field full"><label>Remarks (optional)</label><input id="eatFoodNotes" type="text" placeholder="Optional note"></div></div><div class="form-actions"><button class="secondary" type="button" onclick="closeEatFood()">Cancel</button><button class="primary" type="button" onclick="saveEatFood()">💾 Save Food & Add to Member Bill</button></div></div></div><style>.food-recipe-list{display:grid;gap:8px;max-height:300px;overflow:auto}.food-recipe-option{display:grid;grid-template-columns:22px minmax(0,1fr) 90px;gap:8px;align-items:center;background:#0b3a2b;border:1px solid #38835e;border-radius:9px;padding:10px}.food-recipe-option input[type=checkbox]{width:18px;height:18px}.food-recipe-option b{color:#f2c94c}.food-recipe-option input[type=number]{padding:8px;min-width:0}.food-status-pending{color:#ffd36b;font-weight:700}.food-status-done{color:#8de0a9;font-weight:700}@media(max-width:480px){.food-recipe-option{grid-template-columns:22px minmax(0,1fr) 76px;padding:8px}.food-recipe-option input[type=number]{padding:7px}}</style>
+<div class="modal" id="eatFoodModal"><div class="modal-box"><div class="modal-head"><h3>🥝 Eat Food — Member Meal Entry</h3><button class="close" type="button" onclick="closeEatFood()">✕</button></div><div id="eatFoodMember" class="meal-entry"></div><div class="form-grid"><div class="field"><label>Date *</label><input id="eatFoodDate" type="date"></div><div class="field"><label>Time *</label><input id="eatFoodTime" type="time"></div><div class="field"><label>Meal Time *</label><select id="eatFoodMeal"><option>Morning Tea</option><option>Breakfast</option><option>Midday Tea</option><option>Lunch</option><option>Evening Tea</option><option>Dinner</option></select></div><div class="field"><label>Food Type</label><select id="eatFoodType"><option>Veg</option><option>Non-Veg</option><option>Both</option></select></div><div class="field full"><label>Choose Recipes / Dishes (multiple allowed)</label><div id="eatFoodRecipes" class="food-recipe-list"></div><button type="button" class="secondary" style="margin-top:9px" onclick="addEatFoodRecipeRow()">＋ Add Another Recipe</button><div id="eatFoodRecipeTotal" class="meal-entry" style="margin-top:9px">Selected food total: A$0.00</div></div><div class="field full"><label>Remarks (optional)</label><input id="eatFoodNotes" type="text" placeholder="Optional note"></div></div><div class="form-actions"><button class="secondary" type="button" onclick="closeEatFood()">Cancel</button><button class="primary" type="button" onclick="saveEatFood()">💾 Save Food & Add to Member Bill</button></div></div></div><style>.food-recipe-list{display:grid;gap:8px;max-height:300px;overflow:auto}.food-recipe-option{display:grid;grid-template-columns:minmax(0,1fr) 82px 34px;gap:8px;align-items:center;background:#f5faf6;border:1px solid #dce5df;border-radius:9px;padding:9px}.food-recipe-option select,.food-recipe-option input{width:100%;min-width:0;background:#fff;color:#214d3b;border:1px solid #cbd9d0;border-radius:7px;padding:9px}.food-recipe-option .food-remove{background:#fff;color:#bd3942;border:1px solid #e5bfc2;border-radius:7px;padding:8px;font-weight:700}.food-status-pending{color:#946700;font-weight:700}.food-status-done{color:#176747;font-weight:700}@media(max-width:480px){.food-recipe-option{grid-template-columns:minmax(0,1fr) 68px 32px;gap:5px;padding:7px}.food-recipe-option select,.food-recipe-option input{padding:8px 5px}}</style>
 <!-- MEMBER PAYMENT -->
 <div class="modal" id="paymentModal">
  <div class="modal-box">
@@ -883,20 +883,46 @@ function startEatFood(id){viewMember(id);openEatFood()}
 function openEatFood(){
  const m=members.find(x=>String(x.id)===String(viewingId));if(!m){showToast("Member details nahi mile.","error");return}
  const d=getData(),recipes=Array.isArray(d.recipes)?d.recipes:[];
- document.getElementById("eatFoodMember").innerHTML="<b>Member:</b> "+esc(m.name)+" · "+esc(m.idNo??m.forceNo)+"<br><small>Selected food ka charge isi member ke account mein add hoga.</small>";
+ document.getElementById("eatFoodMember").innerHTML="<b>Member:</b> "+esc(m.name)+" · "+esc(m.idNo??m.forceNo)+"<br><small>Dropdown se dish chunein; har dish ki serving alag set kar sakte hain.</small>";
  const now=new Date();document.getElementById("eatFoodDate").value=localDateValue();document.getElementById("eatFoodTime").value=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
  document.getElementById("eatFoodMeal").value="Breakfast";document.getElementById("eatFoodType").value="Veg";document.getElementById("eatFoodNotes").value="";
- document.getElementById("eatFoodRecipes").innerHTML=recipes.length?recipes.map(r=>'<label class="food-recipe-option"><input type="checkbox" class="eat-recipe-check" value="'+esc(r.id)+'"><span><b>'+esc(r.name||"Recipe")+'</b><br><small>'+esc(r.foodType||"Both")+' · '+money(r.costPerServing||r.totalCost||0)+' / serving</small></span><input type="number" class="eat-recipe-servings" data-recipe="'+esc(r.id)+'" min="0.25" step="0.25" value="1" aria-label="Servings" disabled></label>').join(""):'<p>No recipes found. Pehle Recipes page mein recipes aur ingredients save karein.</p>';
- document.querySelectorAll(".eat-recipe-check").forEach(ch=>ch.addEventListener("change",()=>{const q=[...document.querySelectorAll(".eat-recipe-servings")].find(x=>x.dataset.recipe===ch.value);if(q)q.disabled=!ch.checked}));
+ document.getElementById("eatFoodRecipes").innerHTML="";
+ if(recipes.length)addEatFoodRecipeRow();
+ else document.getElementById("eatFoodRecipes").innerHTML='<p>No recipes found. Pehle Recipes page mein recipes aur ingredients save karein.</p>';
+ updateEatFoodRecipeTotal();
  document.getElementById("eatFoodModal").style.display="block";
+}
+function addEatFoodRecipeRow(){
+ const box=document.getElementById("eatFoodRecipes");if(!box)return;
+ const recipes=getData().recipes||[];
+ if(!recipes.length){showToast("Pehle Recipes page mein recipe add karein.","warning");return}
+ const options='<option value="">Select recipe / dish</option>'+recipes.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.name||"Recipe")+' — '+money(r.costPerServing||r.totalCost||0)+'/serving</option>').join("");
+ const row=document.createElement("div");row.className="food-recipe-option";
+ row.innerHTML='<select class="eat-recipe-select" aria-label="Select recipe" onchange="updateEatFoodRecipeTotal()">'+options+'</select><input type="number" class="eat-recipe-servings" min="0.25" step="0.25" value="1" aria-label="Servings" oninput="updateEatFoodRecipeTotal()"><button type="button" class="food-remove" aria-label="Remove recipe" title="Remove this recipe" onclick="this.parentElement.remove();updateEatFoodRecipeTotal()">✕</button>';
+ box.appendChild(row);refreshEatFoodRecipeOptions();
+}
+function refreshEatFoodRecipeOptions(){
+ const selects=[...document.querySelectorAll(".eat-recipe-select")],chosen=selects.map(s=>s.value).filter(Boolean);
+ selects.forEach(select=>{[...select.options].forEach(opt=>{if(!opt.value)return;opt.disabled=chosen.includes(opt.value)&&select.value!==opt.value})});
+}
+function updateEatFoodRecipeTotal(){
+ const d=getData();let total=0;
+ document.querySelectorAll("#eatFoodRecipes .food-recipe-option").forEach(row=>{
+  const id=row.querySelector(".eat-recipe-select")?.value,qty=Number(row.querySelector(".eat-recipe-servings")?.value||0);
+  const recipe=(d.recipes||[]).find(r=>String(r.id)===String(id));
+  if(recipe&&qty>0)total+=Number(recipe.costPerServing??recipe.totalCost??0)*qty;
+ });
+ const out=document.getElementById("eatFoodRecipeTotal");if(out)out.textContent="Selected food total: "+money(total);
+ refreshEatFoodRecipeOptions();
 }
 function closeEatFood(){document.getElementById("eatFoodModal").style.display="none"}
 function saveEatFood(){
  const d=getData(),m=(d.members||[]).find(x=>String(x.id)===String(viewingId));if(!m){showToast("Member nahi mila.","error");return}
  const date=document.getElementById("eatFoodDate").value,time=document.getElementById("eatFoodTime").value,mealType=document.getElementById("eatFoodMeal").value,foodType=document.getElementById("eatFoodType").value;
  if(!date||!time){showToast("Date aur time select karein.","warning");return}
- const selected=[...document.querySelectorAll(".eat-recipe-check:checked")].map(ch=>{const r=(d.recipes||[]).find(x=>String(x.id)===String(ch.value)),q=[...document.querySelectorAll(".eat-recipe-servings")].find(x=>x.dataset.recipe===ch.value);return {recipe:r,servings:Number(q?.value||1)}}).filter(x=>x.recipe);
- if(!selected.length){showToast("Kam se kam ek recipe select karein.","warning");return}
+ const selected=[...document.querySelectorAll("#eatFoodRecipes .food-recipe-option")].map(row=>{const id=row.querySelector(".eat-recipe-select")?.value,r=(d.recipes||[]).find(x=>String(x.id)===String(id)),q=Number(row.querySelector(".eat-recipe-servings")?.value||0);return {recipe:r,servings:q}}).filter(x=>x.recipe);
+ if(!selected.length){showToast("Kam se kam ek recipe dropdown se select karein.","warning");return}
+ if(new Set(selected.map(x=>String(x.recipe.id))).size!==selected.length){showToast("Ek recipe do baar select hui hai. Duplicate row hata dein.","warning");return}
  if(selected.some(x=>!Number.isFinite(x.servings)||x.servings<=0)){showToast("Har dish ki serving quantity sahi dalein.","warning");return}
  const usageMap=new Map();let total=0;
  const factor=u=>{u=String(u||"").toLowerCase();if(["g","gram","grams"].includes(u))return ["w",1];if(["kg","kgs"].includes(u))return ["w",1000];if(u==="ml")return ["v",1];if(["l","ltr","litre","liter"].includes(u))return ["v",1000];if(["pcs","pc","piece","pieces"].includes(u))return ["c",1];return null};
