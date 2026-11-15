@@ -174,6 +174,8 @@ td.no-print{white-space:nowrap}
 #rationDeductionRegister table{min-width:620px;border-collapse:separate;border-spacing:0;font-size:11px}
 #rationDeductionRegister th{background:#e8f4ec;color:#176747;padding:8px 7px;border-bottom:1px solid #cfe1d5;white-space:nowrap}
 #rationDeductionRegister td{color:#214d3b;padding:7px;border-bottom:1px solid #e5eee8;line-height:1.35}
+#rationDeductionRegister .ration-member-photo{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid #d8b33e;display:block;background:#edf6f0}
+#rationDeductionRegister .ration-photo-fallback{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#e8f4ec;border:1.5px solid #d8b33e;font-size:16px}
 #rationDeductionRegister .ration-date{display:inline-block;background:#fff2c9;border:1px solid #e7c75e;color:#74520b;border-radius:6px;padding:4px 6px;font-weight:800;white-space:nowrap}
 #rationDeductionRegister .ration-done{color:#176747;font-weight:800}
 #rationDeductionRegister .ration-qty{font-weight:800;white-space:nowrap}
@@ -264,7 +266,7 @@ td.no-print{white-space:nowrap}
  </section>
 </div>
 <section class="panel no-print" id="foodRecordsPanel"><div class="toolbar"><h3>🍽️ Food Records — Pending Ration Deduction</h3><button type="button" class="primary" onclick="deductPendingFoodRation()">📦 Deduct Ration</button></div><p style="font-size:12px;color:#d9e9e1;margin-bottom:12px">Saved food entries appear here. Deduct all pending ration together.</p><div class="table-wrap"><table style="min-width:760px"><thead><tr><th>Date / Time</th><th>Member</th><th>Meal</th><th>Food / Recipes</th><th>Food Type</th><th>Charge</th><th>Ration Status</th></tr></thead><tbody id="foodRecordRows"></tbody></table></div><div class="empty" id="foodRecordsEmpty">Abhi koi food record nahi hai.</div></section>
-<section class="panel no-print" id="rationDeductionRegister"><div class="toolbar"><h3>📦 Ration Deduction Register</h3><span id="rationRegisterCount" style="font-size:11px;color:#176747;font-weight:bold">0 entries</span></div><div class="table-wrap"><table style="min-width:620px;font-size:11px"><thead><tr><th>📅 Date</th><th>Member</th><th>Meal</th><th>Ration Item</th><th>Deducted Qty</th><th>Status</th></tr></thead><tbody id="rationDeductionRows"></tbody></table></div><div class="empty" id="rationDeductionEmpty">Abhi ration deduction history nahi hai.</div></section>
+<section class="panel no-print" id="rationDeductionRegister"><div class="toolbar"><h3>📦 Ration Deduction Register</h3><span id="rationRegisterCount" style="font-size:11px;color:#176747;font-weight:bold">0 entries</span></div><div class="table-wrap"><table style="min-width:620px;font-size:11px"><thead><tr><th>📅 Date</th><th>Photo</th><th>Member</th><th>Meal</th><th>Ration Item</th><th>Deducted Qty</th><th>Status</th></tr></thead><tbody id="rationDeductionRows"></tbody></table></div><div class="empty" id="rationDeductionEmpty">Abhi ration deduction history nahi hai.</div></section>
 <div class="footer">SANTOS Cooking House System | Members Register</div>
 </main>
 </div>
@@ -984,9 +986,9 @@ function renderRationDeductionRegister(){
  const rows=[];
  records.forEach(r=>{
   const snap=(r.memberSnapshots||[])[0]||{},member=(d.members||[]).find(m=>String(m.id)===String(snap.id||r.memberIds?.[0]));
-  (r.ingredientUsage||[]).forEach(item=>rows.push({date:r.date,time:r.time,member:snap.name||member?.name||"Member",meal:r.mealType||"",item:item.itemName||"Ration",qty:Number(item.quantity||0),unit:item.unit||"",status:"✓ Deducted"}));
+  (r.ingredientUsage||[]).forEach(item=>rows.push({date:r.date,time:r.time,photo:member?.photo||"",member:snap.name||member?.name||"Member",meal:r.mealType||"",item:item.itemName||"Ration",qty:Number(item.quantity||0),unit:item.unit||"",status:"✓ Deducted"}));
  });
- body.innerHTML=rows.map(x=>'<tr><td><span class="ration-date">📅 '+esc(x.date||"—")+'</span><br><small>'+esc(x.time||"")+'</small></td><td>'+esc(x.member)+'</td><td>'+esc(x.meal)+'</td><td>'+esc(x.item)+'</td><td class="ration-qty">'+esc(Number(x.qty.toFixed(3)))+' '+esc(x.unit)+'</td><td class="ration-done">'+x.status+'</td></tr>').join("");
+ body.innerHTML=rows.map(x=>'<tr><td><span class="ration-date">📅 '+esc(x.date||"—")+'</span><br><small>'+esc(x.time||"")+'</small></td><td>'+(x.photo?'<img class="ration-member-photo" src="'+esc(x.photo)+'" alt="Member">':'<span class="ration-photo-fallback">👤</span>')+'</td><td>'+esc(x.member)+'</td><td>'+esc(x.meal)+'</td><td>'+esc(x.item)+'</td><td class="ration-qty">'+esc(Number(x.qty.toFixed(3)))+' '+esc(x.unit)+'</td><td class="ration-done">'+x.status+'</td></tr>').join("");
  empty.style.display=rows.length?"none":"block";if(count)count.textContent=rows.length+" entries";
 }
 function closeView(){document.getElementById("viewModal").style.display="none"}
