@@ -39,7 +39,7 @@ function renderRecipes(){
 function renderMemberPicker(){
  const list=activeMembers().filter(m=>(String(m.name||"")+" "+String(m.forceNo||m.forceNumber||"")).toLowerCase().includes(memberSearch));
  $("memberPicker").innerHTML=list.length?list.map(m=>{
-  const id=String(m.id),on=pendingMembers.includes(id);
+  const id=String(m.id),added=chosenMembers.includes(id),on=pendingMembers.includes(id)||added;
   return '<label class="mm-pick '+(on?"is-on":"")+'"><input type="checkbox" class="member-check" value="'+esc(id)+'" '+(on?"checked":"")+'> <span class="mm-pick-name">'+esc(m.name||"Member")+'</span><small>'+esc(m.rank||"")+' '+esc(m.forceNo||m.forceNumber||"")+'</small></label>';
  }).join(""):'<p class="mm-help">Is search mein active member nahi mila.</p>';
  $("memberCount").textContent=chosenMembers.length+" selected";
@@ -62,7 +62,7 @@ function renderMemberDishes(){
    return '<div class="mm-dish-row"><label class="mm-dish-check"><input type="checkbox" class="dish-check" data-member="'+esc(id)+'" data-recipe="'+esc(rid)+'" '+(a.on?"checked":"")+'> <span>'+esc(r.name||"Recipe")+'</span></label><label class="mm-servings">Servings<input type="number" class="serving-input" min="0.25" step="0.25" value="'+esc(a.servings)+'" data-member="'+esc(id)+'" data-recipe="'+esc(rid)+'" '+(!a.on?"disabled":"")+'></label><b class="mm-dish-cost">'+money(a.on?c*Number(a.servings||0):0)+'</b></div>';
   }).join("");
   const total=chosenRecipes.reduce((sum,rid)=>{const a=allocation[id][rid],r=rs.find(x=>String(x.id)===rid);return sum+(a?.on&&r?recipeCost(r).cost*Number(a.servings||0):0)},0);
-  return '<article class="mm-member-card"><div class="mm-member-head"><div><b>'+esc(m.name||"Member")+'</b><small>'+esc(m.rank||"")+' · '+esc(m.forceNo||m.forceNumber||"")+'</small></div><b class="mm-member-total">'+money(total)+'</b></div>'+rows+'</article>';
+  return '<article class="mm-member-card"><div class="mm-member-head"><div><b>'+esc(m.name||"Member")+'</b><small>'+esc(m.rank||"")+' · '+esc(m.forceNo||m.forceNumber||"")+'</small></div><div class="mm-member-actions"><b class="mm-member-total">'+money(total)+'</b><button type="button" class="remove-member" data-member="'+esc(id)+'">Remove</button></div></div>'+rows+'</article>';
  }).join("")||'<p class="mm-help">Upar se members select karke Add karein. Har member ko kaunsi dish deni hai, yahan alag tick karein.</p>';
 }
 function calculate(){
@@ -163,6 +163,7 @@ $("recipePicker").addEventListener("change",e=>{if(!e.target.matches(".recipe-ch
 $("memberPicker").addEventListener("change",e=>{if(!e.target.matches(".member-check"))return;const id=String(e.target.value);if(e.target.checked){if(!pendingMembers.includes(id))pendingMembers.push(id)}else pendingMembers=pendingMembers.filter(x=>x!==id);$("memberCount").textContent=(chosenMembers.length+pendingMembers.length)+" selected (including pending)"});
 $("memberSearch").addEventListener("input",e=>{memberSearch=e.target.value.toLowerCase();renderMemberPicker()});
 $("addMembers").addEventListener("click",addMembers);
+$("memberDishCards").addEventListener("click",e=>{const b=e.target.closest(".remove-member");if(!b)return;const id=String(b.dataset.member);chosenMembers=chosenMembers.filter(x=>x!==id);delete allocation[id];update()});
 $("memberDishCards").addEventListener("change",e=>{
  const id=e.target.dataset.member,rid=e.target.dataset.recipe;if(!id||!rid)return;
  if(e.target.matches(".dish-check")){allocation[id][rid].on=e.target.checked;renderMemberDishes();calculate()}
