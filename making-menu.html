@@ -1,164 +1,70 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Making Menu & Hajiri | SANTOS Cooking House</title><link rel="stylesheet" href="css/app.css?v=20261109-audit-refresh1"><style>
-.mm{max-width:1100px;margin:auto}.mm-card{margin:14px 0;padding:15px}.day-card{border:1px solid var(--border);border-radius:12px;padding:13px;margin:12px 0;background:#09291e}.day-card h3{margin:0 0 12px;padding:12px 14px;display:flex;align-items:center;min-height:26px;border-left:5px solid #45df91;border-radius:9px;background:linear-gradient(100deg,#176747 0%,#0d3b2b 72%,#09291e 100%);color:#f1fff6;font-size:20px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;text-shadow:0 1px 2px #0008;box-shadow:inset 0 1px 0 #ffffff18,0 3px 9px #0003}.slot{display:grid;grid-template-columns:minmax(120px,.8fr) minmax(160px,1.4fr) auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #234b3a}.slot select{min-width:0}.picked{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}.picked span{background:#12452f;padding:4px 8px;border-radius:7px;font-size:13px}.mm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.mm-grid label{display:block;font-weight:700}.mm-grid input,.mm-grid select{margin-top:7px}.mm-choice{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid var(--border);border-radius:9px;background:#09291e;margin:6px 0}.mm-choice input{width:auto;margin:0}.mm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.mm-stat{padding:12px;border:1px solid var(--border);border-radius:10px}.mm-stat small{display:block;color:var(--muted)}.mm-stat b{display:block;font-size:20px;margin-top:4px}.mm-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.mm-actions button{flex:1;min-width:170px}.mm-primary{background:#00a94b!important;color:#062719!important}.mm-table{width:100%;min-width:520px;border-collapse:collapse}.mm-table th,.mm-table td{padding:9px;border-bottom:1px solid var(--border);text-align:left}.mm-muted{font-size:13px;color:var(--muted);line-height:1.5}.mm-notice{position:fixed;inset:0;background:#0009;z-index:9999;display:grid;place-items:center;padding:18px}.mm-notice-box{width:min(100%,390px);background:#fff;color:#1c3327;border-radius:18px;padding:22px;text-align:center}.mm-notice-box h3{color:#176747}.mm-notice-box button{padding:11px 24px;background:#176747;color:white;border:0;border-radius:9px}@media(max-width:600px){.mm-grid,.mm-stats{grid-template-columns:1fr}.slot{grid-template-columns:1fr 1.4fr auto}.mm-card{padding:12px}}
-
-/* Mobile fit fix — weekly menu */
-html,body{max-width:100%;overflow-x:hidden}
-.mm,.mm-card,.day-card{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
-.mm-card{overflow:hidden}
-.day-card{padding:10px}
-.slot{min-width:0;grid-template-columns:minmax(0,1fr);gap:7px;padding:11px 0}
-.slot>*{min-width:0;max-width:100%}
-.slot select,.slot input{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
-.picked{min-width:0;max-width:100%;overflow-wrap:anywhere}
-.mm-grid>*{min-width:0}
-.mm-grid input,.mm-grid select{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
-.tablewrap{width:100%;max-width:100%;overflow-x:auto}
-.mm-table{width:100%;min-width:520px}
-@media(max-width:600px){
- .content.mm{padding:10px!important;width:100%;max-width:100%;overflow-x:hidden}
- .mm-card{padding:11px!important;margin:10px 0!important}
- .day-card{padding:9px!important;margin:9px 0!important}
- .day-card h3{font-size:17px!important;padding:10px!important}
- .slot{grid-template-columns:minmax(0,1fr)!important}
- .slot select{font-size:14px!important}
- .mm-actions button{min-width:0!important;width:100%;flex:1 1 100%}
-}
-
-/* Weekly menu Add button contrast fix */
-.mm-actions button,.slot button,.day-card button{
- color:#ffffff!important;
- text-shadow:0 1px 2px rgba(0,0,0,.45)!important;
- font-weight:800!important;
-}
-.mm-actions button:disabled,.slot button:disabled,.day-card button:disabled{
- color:#f4fff8!important;
- background:linear-gradient(180deg,#23845d 0%,#176747 58%,#10563e 100%)!important;
- border:1px solid #72b995!important;
- opacity:1!important;
- text-shadow:0 1px 2px rgba(0,0,0,.5)!important;
- cursor:not-allowed!important;
- filter:saturate(.9)!important;
-}
-
-/* Compact weekly menu Add buttons */
-@media(max-width:600px){
- .slot{grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;column-gap:9px!important;row-gap:7px!important}
- .slot>b{grid-column:1/-1!important}
- .slot>select{grid-column:1/-1!important;width:100%!important;min-width:0!important}
- .slot>button.addRecipe{grid-column:1!important;justify-self:start!important;width:auto!important;min-width:88px!important;max-width:112px!important;min-height:38px!important;height:38px!important;padding:7px 14px!important;flex:0 0 auto!important;font-size:14px!important;border-radius:9px!important}
- .slot .picked{grid-column:1/-1!important}
-}
-</style><link rel="stylesheet" href="./assets/command-centre.css?v=20261113-soft3d-buttons">
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Making Menu & Member Meal Account | SANTOS</title>
+<link rel="stylesheet" href="css/app.css?v=20261109-audit-refresh1">
 <link rel="manifest" href="./manifest.webmanifest?v=sky-png-1">
-<link rel="icon" type="image/svg+xml" href="./icons/santos-home-kitchen.svg?v=gold-green-v2">
-<link rel="apple-touch-icon" href="./icons/santos-home-kitchen.svg?v=gold-green-v2">
+<link rel="icon" type="image/svg+xml" href="./icons/santos-home-kitchen.svg">
+<link rel="stylesheet" href="./assets/command-centre.css?v=20261113-soft3d-buttons">
 <link rel="stylesheet" href="./assets/sidebar-boot.css?v=20261114-homeheaderfix">
-<style id="santos-weekly-menu-light-theme">
-.mm-card{background:linear-gradient(145deg,#fff 0%,#f4faf5 100%)!important;border:1px solid #c9dfd0!important;border-radius:17px!important;box-shadow:0 4px 12px rgba(25,85,52,.07)!important;color:#214d3b!important}
-.mm-card h3{color:#176747!important}
-.day-card{background:linear-gradient(145deg,#fff 0%,#edf7f0 100%)!important;border:1px solid #b9d9c4!important;border-radius:14px!important;color:#214d3b!important;box-shadow:0 3px 8px rgba(25,85,52,.06)!important}
-.day-card h3{background:linear-gradient(100deg,#e1f3e6,#cce9d5)!important;color:#176747!important;border-left:4px solid #d6b348!important;text-shadow:none!important;box-shadow:inset 0 1px 0 #fff,0 2px 5px rgba(25,85,52,.08)!important;letter-spacing:.2px!important}
-.slot{border-bottom:1px solid #d8e8dd!important}
-.slot b{color:#245d43!important}
-.slot select,.mm-grid select,.mm-grid input,.mealMemberSearch{background:#fff!important;color:#214d3b!important;border:1px solid #b9d9c4!important;border-radius:9px!important;padding:10px!important}
-.picked span{background:#e0f2e5!important;color:#176747!important;border:1px solid #b9d9c4!important}
-.picked button{background:#fff!important;color:#9b3434!important;border:1px solid #e0b7b7!important}
-.mm-choice{background:#f5faf6!important;border:1px solid #c9dfd0!important;color:#214d3b!important}
-.mm-choice .foodChoice{background:#fff!important;color:#176747!important;border:1px solid #b9d9c4!important}
-.mm-muted{color:#6f8377!important}
-.mm-stat{background:#f5faf6!important;border:1px solid #c9dfd0!important;color:#176747!important}
-.mm-primary{background:linear-gradient(180deg,#23865b,#176747)!important;color:#fff!important}
-.mm-actions button,.slot button{border-radius:9px!important}
-.mm-table th{color:#176747!important;background:#e5f3e9!important}
-.mm-table td{color:#315d47!important}
-.saved-mark{color:#176747!important;font-size:13px}
-@media(max-width:600px){.day-card h3{font-size:16px!important}.mm-choice{align-items:flex-start!important}}
-</style><style id="santos-food-choice-final">
-.mm-choice input:disabled{opacity:.35;cursor:not-allowed}
-.mm-choice:has(input:disabled){opacity:.62;background:#f0f3f1!important}
-.mm-choice .foodChoice{display:block;max-width:190px;width:100%;min-height:38px}
-@media(max-width:600px){.mm-choice{gap:9px!important;padding:10px!important}.mm-choice>span{min-width:0}.mm-choice .foodChoice{max-width:100%;font-size:14px}}
-</style><style id="santos-making-menu-redesign">
-html,body{width:100%;max-width:100%;overflow-x:hidden}
-.content.mm{width:100%;max-width:1120px;margin:0 auto;padding:clamp(10px,2.2vw,24px);box-sizing:border-box}
-.mm .pagehead{padding:17px 18px;margin:0 0 16px;border:1px solid #c7dfcf;border-radius:16px;background:linear-gradient(135deg,#f8fff9,#e7f5eb);box-shadow:0 4px 14px rgba(23,103,71,.07)}
-.mm .pagehead h2{font-size:clamp(19px,3vw,25px);line-height:1.25;color:#176747;margin:0 0 7px}
-.mm .pagehead p{margin:0;max-width:850px}
-.mm-card{width:100%;min-width:0;margin:13px 0!important;padding:clamp(13px,2vw,20px)!important;border:1px solid #c9dfd0!important;border-radius:16px!important;background:linear-gradient(145deg,#fff,#f5fbf6)!important;box-shadow:0 4px 14px rgba(23,103,71,.065)!important;overflow:hidden}
-.mm-card>h3{display:flex;align-items:center;gap:9px;color:#176747!important;font-size:17px!important;line-height:1.25;margin:0 0 15px!important;padding:0 0 11px;border-bottom:1px solid #dcebe0}
-.mm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 15px}
-.mm-grid label,.mm-card>label{display:block;min-width:0;color:#426b53;font-size:13px;font-weight:700;line-height:1.35}
-.mm-grid input,.mm-grid select,.mm-card>label select{display:block;width:100%;max-width:100%;min-width:0;min-height:43px;margin-top:7px;padding:10px 11px!important;border:1px solid #b9d9c4!important;border-radius:10px!important;background:#fff!important;color:#214d3b!important;font-size:15px!important;box-sizing:border-box}
-.mm-grid select option,.mm-card select option{background:#fff;color:#214d3b}
-.mm-card h4{color:#315f45;margin:16px 0 8px;font-size:14px}
-.mm-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px}
-.mm-actions button,.slot button,.mm-choice button{min-height:40px;border-radius:10px!important;padding:9px 14px!important;font-weight:800!important}
-.mm-actions button{flex:0 1 auto;min-width:145px}
-.mm-actions .mm-primary{background:linear-gradient(180deg,#23865b,#176747)!important;color:#fff!important}
-#selectedRecipes{display:flex;gap:8px;flex-wrap:wrap;min-width:0}
-#selectedRecipes>span{display:inline-flex;align-items:center;gap:7px;max-width:100%;padding:7px 10px;border:1px solid #b9d9c4;border-radius:10px;background:#eaf6ed;color:#176747;font-weight:700;overflow-wrap:anywhere}
-#selectedRecipes button{width:26px;height:26px;min-height:26px;padding:0!important;border-radius:50%!important;background:#fff!important;color:#a33!important;border:1px solid #e3baba!important}
-#selectedMembers{display:grid;gap:8px;min-width:0}
-.mm-choice{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;margin:0!important;padding:11px 12px!important;border:1px solid #c9dfd0!important;border-radius:12px!important;background:#f7fbf8!important}
-.mm-choice>b{flex:1 1 120px!important;min-width:0;color:#214d3b;overflow-wrap:anywhere}
-.mm-choice small{color:#728679}
-.mm-choice .entryFoodChoice{width:auto;min-width:112px;max-width:145px;min-height:38px;padding:8px!important;background:#fff!important;color:#176747!important;border:1px solid #b9d9c4!important;border-radius:9px!important}
-.mm-choice button{background:#fff!important;color:#a33!important;border:1px solid #e3baba!important}
-#entrySummary{padding:13px;border:1px solid #c9dfd0;border-radius:12px;background:#f1f8f3;color:#315d47;line-height:1.7;overflow-wrap:anywhere}
-#entrySummary b{color:#176747}
-.mm-muted{color:#718477!important;line-height:1.55}
-#cookPhone{background:#f3f7f4!important;color:#456b54!important}
-.saved-meal-card{border:1px solid #c9dfd0!important;border-radius:14px!important;box-shadow:0 3px 10px rgba(23,103,71,.05)}
-.saved-meal-card h3{color:#176747!important}
-.saved-meal-card button{min-height:42px;border-radius:10px!important;background:#176747!important;color:#fff!important;font-weight:800!important}
-.saved-meal-card details summary{color:#176747}
-.mm-table{min-width:0;width:100%}
-@media(max-width:650px){
- .content.mm{padding:10px!important}
- .mm .pagehead{padding:14px!important;margin-bottom:11px}
- .mm-card{padding:13px!important;margin:10px 0!important;border-radius:13px!important}
- .mm-grid{grid-template-columns:minmax(0,1fr)!important;gap:11px!important}
- .mm-grid label,.mm-card>label{font-size:13px}
- .mm-grid input,.mm-grid select,.mm-card>label select{min-height:44px;font-size:16px!important}
- .mm-actions{display:grid;grid-template-columns:1fr;width:100%}
- .mm-actions button{width:100%;min-width:0!important;min-height:44px}
- .mm-choice{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important}
- .mm-choice>b{grid-column:1/-1!important}
- .mm-choice small{grid-column:1!important}
- .mm-choice .entryFoodChoice{grid-column:1!important;width:100%!important;max-width:none!important}
- .mm-choice button{grid-column:2!important;grid-row:2/4!important;align-self:center!important;min-width:80px}
- #entrySummary{font-size:13px;padding:11px}
- .saved-meal-card{padding:12px!important}
-}
-@media(max-width:360px){
- .mm .pagehead h2{font-size:18px}
- .mm-choice{grid-template-columns:minmax(0,1fr)!important}
- .mm-choice button{grid-column:1!important;grid-row:auto!important;width:100%}
-}
-</style></head><body><div class="app"><aside class="sidebar"><div class="brand">🛡️<b>SANTOS COOKING HOUSE</b><small>Cooking House System</small></div><nav class="nav"><a href="index.html">▦ Dashboard</a><a href="members.html">👥 Members</a><a href="ration-store.html">📦 Ration Store</a><a href="purchases.html">🛒 Purchases</a><a href="recipes.html">🍲 Recipes</a><a class="active" href="making-menu.html">🍽️ Making Menu & Hajiri</a><a href="mess-staff.html">👨‍🍳 Mess Staff</a><a href="accounts.html">💰 Accounts</a><a href="reports.html">📊 Reports</a><a href="mess-handover.html">🔄 Mess Handover</a><a href="settings.html">⚙️ Settings</a><a href="backup.html">💾 Backup & Restore</a><a href="software-guide.html">📖 हिन्दी उपयोग गाइड</a></nav></aside><main class="main"><header class="topbar"><div><h1>SANTOS Cooking House System</h1><small>Daily meal planning • Member hajiri • Veg / Non-Veg • Ration calculation</small></div><div id="dateNow"></div></header><div class="content mm"><div class="pagehead"><h2>🍽️ Daily Making Menu & Member Hajiri</h2><p class="mm-muted">Pehle date aur meal chunein, phir dishes add karein. Khana khane wale members select karke unki Veg / Non-Veg choice set karein. Save karne se pehle ration aur total cost check karein.</p></div>
-<section class="panel mm-card">
-<h3>1. Meal Details</h3>
-<div class="mm-grid">
-<label>Date<input id="entryDate" type="date"></label>
-<label>Day<select id="entryDay"><option>Sunday</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select></label>
-<label>Meal<select id="entryMeal"><option>Morning Tea</option><option>Breakfast</option><option>Midday Tea</option><option>Lunch</option><option>Evening Tea</option><option>Dinner</option></select></label>
-<label>Recipe List<select id="recipeSelect"><option value="">Recipe select karein</option></select></label>
-</div>
-<div class="mm-actions"><button type="button" id="addRecipeBtn">＋ Add Recipe</button></div>
-<h4 style="margin-top:14px">Added Recipes</h4><div id="selectedRecipes" class="picked"><span>Abhi recipe add nahi hui</span></div>
-</section>
-<section class="panel mm-card">
-<h3>2. Khana Khane Wale Members</h3>
-<label>Member List<select id="memberSelect"><option value="">Member select karein</option></select></label>
-<div class="mm-actions"><button type="button" id="addMemberBtn">＋ Add Member</button></div>
-<div id="selectedMembers" style="margin-top:12px"><p class="mm-muted">Abhi member add nahi hua.</p></div>
-<p class="mm-muted">Har member ke liye Veg ya Non-Veg chunein. Usi choice ki recipes aur ration hi calculate hoga.</p>
-</section>
-<section class="panel mm-card">
-<h3>3. Save Meal & Deduct Ration</h3>
-<div id="entrySummary" class="mm-muted">Recipe aur members add karne ke baad total yahan dikhega.</div>
-<div class="mm-actions"><button type="button" class="mm-primary" id="saveEntryBtn">✓ Save Meal, Member Details & Deduct Ration</button></div>
-</section>
-<section class="panel mm-card"><h3>4. Cook ko WhatsApp Ration</h3><div class="mm-grid"><label>Cook Select Karein<select id="cookSelect"></select></label><label>Cook WhatsApp Number<input id="cookPhone" readonly placeholder="Automatic number"></label></div><p class="mm-muted">Saved meal record se WhatsApp Ration bhejein.</p></section>
-<section class="panel mm-card"><h3>5. Saved Records — Member ke Naam se Full Details</h3><p class="mm-muted">Har saved meal mein member ka naam, Veg/Non-Veg choice, selected dish, member ka kharcha, total ration aur total bill dekhein.</p><div id="savedMealCards" class="saved-meal-cards"></div></section>
-</div><footer class="footer">SANTOS Cooking House System • Saved locally in this browser</footer></main></div><script src="js/making-menu-v5.js?v=20261115-messmanager2-flow1"></script><script src="js/shared-header.js?v=20261113-no-flash1"></script><script src="js/mobile-nav.js?v=20261109-desktop-drawer3"></script><script src="js/login-lock.js?v=20261110-nco-login1"></script></body></html>
+<style>
+.mm-v6{max-width:1120px;margin:auto;padding:14px;box-sizing:border-box;color:#214d3b}
+.mm-hero{padding:18px;border:1px solid #c9dfd0;border-radius:16px;background:linear-gradient(135deg,#f8fff9,#e5f3e9);margin-bottom:14px}
+.mm-hero h2{margin:0 0 6px;color:#176747;font-size:clamp(20px,3vw,27px)}
+.mm-hero p{margin:0;color:#668071;line-height:1.5}
+.mm-section{background:linear-gradient(145deg,#fff,#f5faf6);border:1px solid #c9dfd0;border-radius:15px;padding:16px;margin:13px 0;box-shadow:0 3px 12px #1767470d;min-width:0}
+.mm-section h3{margin:0 0 13px;color:#176747;font-size:17px;padding-bottom:10px;border-bottom:1px solid #dcebe0}
+.mm-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mm-fields label,.mm-label{display:block;color:#426b53;font-weight:700;font-size:13px;min-width:0}
+.mm-fields input,.mm-fields select,.mm-section select,.mm-search{display:block;width:100%;min-width:0;box-sizing:border-box;margin-top:6px;padding:11px;border:1px solid #b9d9c4;border-radius:9px;background:#fff;color:#214d3b;font-size:15px;min-height:43px}
+.mm-day{align-self:end;padding:12px;border-radius:9px;background:#edf7f0;color:#176747;font-weight:700}
+.mm-help{font-size:13px;color:#718477;line-height:1.55}
+.mm-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mm-pick{display:flex;align-items:center;gap:8px;min-width:0;padding:10px;border:1px solid #d5e6da;border-radius:10px;background:#fff;color:#315d47}
+.mm-pick.is-on{border-color:#78b88e;background:#edf8f0}
+.mm-pick input{width:18px;height:18px;flex:0 0 18px;accent-color:#176747}
+.mm-pick-name{flex:1;min-width:0;font-weight:700;overflow-wrap:anywhere}
+.mm-pick b{font-size:12px;white-space:nowrap;color:#176747}
+.mm-tag{font-size:10px;padding:3px 6px;border-radius:20px;background:#f1f4f1;color:#5c7566}
+.mm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.mm-actions button{min-height:43px;padding:10px 16px;border-radius:9px;background:#176747;color:#fff;font-weight:800}
+.mm-actions button:disabled{opacity:.45;cursor:not-allowed}
+.mm-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.mm-stat{padding:12px;border:1px solid #c9dfd0;border-radius:11px;background:#f5faf6}
+.mm-stat small{display:block;color:#718477;font-size:11px}
+.mm-stat b{display:block;margin-top:5px;color:#176747;font-size:19px}
+.mm-member-list{display:grid;gap:10px}
+.mm-member-card{border:1px solid #c9dfd0;border-radius:12px;padding:12px;background:#fbfefc;min-width:0}
+.mm-member-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.mm-member-head>div{min-width:0}.mm-member-head b{display:block;color:#176747;overflow-wrap:anywhere}.mm-member-head small{display:block;color:#718477;margin-top:3px}
+.mm-member-total{color:#176747;white-space:nowrap;font-size:16px}
+.mm-dish-row{display:grid;grid-template-columns:minmax(0,1fr) 112px auto;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #e5eee8}
+.mm-dish-check{display:flex;align-items:center;gap:8px;min-width:0;color:#315d47;font-weight:700;font-size:13px}
+.mm-dish-check input{width:18px;height:18px;flex:0 0 18px;accent-color:#176747}
+.mm-servings{font-size:11px;color:#718477}.mm-servings input{width:100%;box-sizing:border-box;padding:7px;border:1px solid #b9d9c4;border-radius:7px;color:#214d3b;background:#fff;margin-top:4px}
+.mm-dish-cost{white-space:nowrap;color:#176747;font-size:13px}
+.mm-cost-row,.mm-ration-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #e5eee8;font-size:13px}
+.mm-cost-row b,.mm-ration-row b{color:#176747;white-space:nowrap}.mm-ration-row small{color:#718477;white-space:nowrap}
+.mm-ok{padding:10px;border:1px solid #a9d2b5;background:#eff9f1;border-radius:9px;color:#176747;font-weight:700;font-size:13px}
+.mm-error{padding:10px;border:1px solid #e6b5b5;background:#fff1f1;border-radius:9px;color:#8e3030;font-size:13px;line-height:1.6}
+.mm-notice{padding:10px;border:1px solid #8fc49e;background:#eff9f1;border-radius:9px;color:#176747;font-weight:700;margin:10px 0}
+.mm-record{border:1px solid #c9dfd0;border-radius:12px;padding:13px;margin:10px 0;background:#fff}
+.mm-record-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.mm-record-head b{display:block;color:#176747}.mm-record-head small{display:block;color:#718477;margin-top:4px}.mm-record-head strong{color:#176747;font-size:18px;white-space:nowrap}
+.mm-record-member{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px;padding:8px 0;border-top:1px solid #e5eee8}.mm-record-member b{color:#315d47}.mm-record-member strong{color:#176747}.mm-record-member small{grid-column:1/-1;color:#718477;line-height:1.4}
+.mm-record details{margin-top:10px}.mm-record summary{color:#176747;font-weight:700;padding:8px 0}
+@media(max-width:650px){.mm-v6{padding:10px}.mm-section{padding:12px;margin:10px 0}.mm-fields,.mm-picks{grid-template-columns:minmax(0,1fr)}.mm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-dish-row{grid-template-columns:minmax(0,1fr) 86px}.mm-dish-cost{grid-column:1/-1;text-align:right}.mm-actions button{width:100%}.mm-cost-row,.mm-ration-row{grid-template-columns:minmax(0,1fr) auto}.mm-ration-row small{grid-column:1/-1;text-align:right}}
+</style></head>
+<body><div class="app"><aside class="sidebar"><div class="brand">🏠<b>SANTOS COOKING HOUSE</b><small>Cooking House System</small></div><nav class="nav"><a href="index.html">▦ Dashboard</a><a href="members.html">👥 Members</a><a href="ration-store.html">📦 Ration Store</a><a href="purchases.html">🛒 Purchases</a><a href="recipes.html">🍲 Recipes</a><a class="active" href="making-menu.html">🍽️ Making Menu</a><a href="weekly-menu.html">🗓️ Weekly Menu</a><a href="mess-staff.html">👨‍🍳 Mess Staff</a><a href="accounts.html">💰 Accounts</a><a href="reports.html">📊 Reports</a><a href="mess-handover.html">🔄 Handover</a><a href="settings.html">⚙️ Settings</a><a href="backup.html">💾 Backup</a><a href="software-guide.html">📖 हिन्दी गाइड</a></nav></aside>
+<main class="main"><header class="topbar"><div><h1>SANTOS Cooking House System</h1><small>Meal serving • Member-wise cost • Ration stock control</small></div><div id="dateNow"></div></header>
+<div class="content mm-v6">
+<div class="mm-hero"><h2>🍽️ Making Menu — Member-wise Meal & Ration</h2><p>Ek meal mein kai recipes chunein. Har member ko alag dishes aur servings dein. System kharcha aur ration automatic calculate karega.</p></div>
+<div id="mmNotice" class="mm-notice" hidden></div>
+<section class="mm-section"><h3>1. Meal Details</h3><div class="mm-fields"><label>Date<input id="mealDate" type="date"></label><label>Meal Type<select id="mealType"><option>Morning Tea</option><option>Breakfast</option><option>Midday Tea</option><option>Lunch</option><option>Evening Tea</option><option>Dinner</option><option>Snacks</option></select></label><div class="mm-day" id="mealDay"></div><label>Cook / Head Cook<select id="cookSelect"></select></label></div></section>
+<section class="mm-section"><h3>2. Select Multiple Recipes / Dishes</h3><p class="mm-help">Yahan ek se zyada recipe select karein. Yeh dishes member-wise assignment mein aayengi.</p><div id="recipePicker" class="mm-picks"></div></section>
+<section class="mm-section"><h3>3. Select Members</h3><input id="memberSearch" class="mm-search" placeholder="Member name ya ID search karein"><div id="memberPicker" class="mm-picks" style="margin-top:10px"></div><div class="mm-actions"><button type="button" id="addMembers">＋ Add Selected Members</button><span id="memberCount" class="mm-help"></span></div></section>
+<section class="mm-section"><h3>4. Member-wise Dishes & Servings</h3><p class="mm-help">Har member ke liye jis dish ki serving deni hai us par tick rakhein. Serving 1 se zyada ya kam bhi kar sakte hain.</p><div id="memberDishCards" class="mm-member-list"></div></section>
+<section class="mm-section"><h3>5. Live Calculation — Member Bill & Total Ration</h3><div class="mm-stats"><div class="mm-stat"><small>Members</small><b id="summaryMembers">0</b></div><div class="mm-stat"><small>Total servings</small><b id="summaryDishes">0</b></div><div class="mm-stat"><small>Total meal cost</small><b id="summaryCost">A$0.00</b></div><div class="mm-stat"><small>Ration items</small><b id="summaryRation">0 items</b></div></div><h4>Member-wise Cost</h4><div id="costPreview"></div><h4>Total Ration Required</h4><div id="rationPreview"></div><div id="validation" style="margin-top:12px"></div><div class="mm-actions"><button type="button" id="saveMeal" disabled>✓ Confirm Meal & Deduct Ration</button></div></section>
+<section class="mm-section"><h3>6. WhatsApp Ration List</h3><div class="mm-fields"><label>Saved Meal<select id="recordForWA"></select></label><label>Cook Number comes from Mess Staff duty</label></div><div class="mm-actions"><button type="button" id="sendWA">Send Ration List on WhatsApp</button></div></section>
+<section class="mm-section"><h3>7. Saved Meal History</h3><p class="mm-help">Har meal ka member-wise dish record, individual cost aur deducted ration yahan milega.</p><div id="savedRecords"></div></section>
+</div><footer class="footer">SANTOS Cooking House System • Saved locally in this browser</footer></main></div>
+<script src="js/making-menu-v6.js?v=20261115-member-allocation1"></script><script src="js/shared-header.js?v=20261113-no-flash1"></script><script src="js/mobile-nav.js?v=20261109-desktop-drawer3"></script><script src="js/login-lock.js?v=20261110-nco-login1"></script></body></html>
