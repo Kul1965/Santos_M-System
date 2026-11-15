@@ -33,7 +33,7 @@ function renderRecipes(){
  const list=recipes();
  $("recipePicker").innerHTML=list.length?list.map(r=>{
   const id=String(r.id),on=chosenRecipes.includes(id),c=recipeCost(r);
-  return '<label class="mm-pick '+(on?"is-on":"")+'"><input type="checkbox" class="recipe-check" value="'+esc(id)+'" '+(on?"checked":"")+'><span class="mm-pick-name">'+esc(r.name||"Recipe")+'</span><span class="mm-tag">'+esc(r.foodType||"Both")+'</span><b>'+money(c.cost)+'</b></label>';
+  return '<label class="mm-pick '+(on?"is-on":"")+'"><input type="checkbox" class="recipe-check" value="'+esc(id)+'" '+(on?"checked":"")+(added?" disabled":"")+'><span class="mm-pick-name">'+esc(r.name||"Recipe")+'</span><span class="mm-tag">'+esc(r.foodType||"Both")+'</span><b>'+money(c.cost)+'</b></label>';
  }).join(""):'<p class="mm-help">Pehle Recipes page par recipe aur uske ration ingredients banayein.</p>';
 }
 function renderMemberPicker(){
