@@ -20,6 +20,7 @@ function notify(msg){const n=$("mmNotice");n.textContent=msg;n.hidden=false;setT
 function currentState(){return read()}
 function recipeCost(r){
  let total=0,missing=[];
+ if(!Array.isArray(r.ingredients)||!r.ingredients.length)missing.push("Recipe ingredients not entered");
  (r.ingredients||[]).forEach(i=>{
   const item=ration().find(x=>String(x.id)===String(i.itemId));
   if(!item){missing.push(i.itemName||"Unknown ration");return}
