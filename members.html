@@ -253,6 +253,7 @@ td.no-print{white-space:nowrap}
   <div class="empty" id="empty" style="display:none">No members found. Click Add New Member to register.</div>
  </section>
 </div>
+<section class="panel no-print" id="foodRecordsPanel"><div class="toolbar"><h3>🍽️ Food Records — Pending Ration Deduction</h3><button type="button" class="primary" onclick="deductPendingFoodRation()">📦 Deduct Ration</button></div><p style="font-size:12px;color:#d9e9e1;margin-bottom:12px">Saved food entries appear here. Deduct all pending ration together.</p><div class="table-wrap"><table style="min-width:760px"><thead><tr><th>Date / Time</th><th>Member</th><th>Meal</th><th>Food / Recipes</th><th>Food Type</th><th>Charge</th><th>Ration Status</th></tr></thead><tbody id="foodRecordRows"></tbody></table></div><div class="empty" id="foodRecordsEmpty">Abhi koi food record nahi hai.</div></section>
 <div class="footer">SANTOS Cooking House System | Members Register</div>
 </main>
 </div>
@@ -353,7 +354,8 @@ td.no-print{white-space:nowrap}
   <div id="memberDetails" class="details"></div>
   <div class="form-actions">
    <button class="secondary" onclick="printMember()">📄 Member PDF</button>
-   <button class="primary" onclick="openPayment()">💰 Payment</button>
+   <button class="primary" onclick="openEatFood()">🥝 Eat Food</button>
+    <button class="primary" onclick="openPayment()">💰 Payment</button>
    <button class="secondary" onclick="openLeaveCard()">🏖️ Leave Card</button>
    <button class="primary" onclick="whatsAppMember()">WhatsApp</button>
    <button class="primary" onclick="closeView()">Close</button>
@@ -385,6 +387,7 @@ td.no-print{white-space:nowrap}
  </div>
 </div>
 
+<div class="modal" id="eatFoodModal"><div class="modal-box"><div class="modal-head"><h3>🥝 Eat Food — Member Meal Entry</h3><button class="close" type="button" onclick="closeEatFood()">✕</button></div><div id="eatFoodMember" class="meal-entry"></div><div class="form-grid"><div class="field"><label>Date *</label><input id="eatFoodDate" type="date"></div><div class="field"><label>Time *</label><input id="eatFoodTime" type="time"></div><div class="field"><label>Meal Time *</label><select id="eatFoodMeal"><option>Morning Tea</option><option>Breakfast</option><option>Midday Tea</option><option>Lunch</option><option>Evening Tea</option><option>Dinner</option></select></div><div class="field"><label>Food Type</label><select id="eatFoodType"><option>Veg</option><option>Non-Veg</option><option>Both</option></select></div><div class="field full"><label>Choose Recipes / Dishes (multiple allowed)</label><div id="eatFoodRecipes" class="food-recipe-list"></div></div><div class="field full"><label>Remarks (optional)</label><input id="eatFoodNotes" type="text" placeholder="Optional note"></div></div><div class="form-actions"><button class="secondary" type="button" onclick="closeEatFood()">Cancel</button><button class="primary" type="button" onclick="saveEatFood()">💾 Save Food & Add to Member Bill</button></div></div></div><style>.food-recipe-list{display:grid;gap:8px;max-height:300px;overflow:auto}.food-recipe-option{display:grid;grid-template-columns:22px minmax(0,1fr) 90px;gap:8px;align-items:center;background:#0b3a2b;border:1px solid #38835e;border-radius:9px;padding:10px}.food-recipe-option input[type=checkbox]{width:18px;height:18px}.food-recipe-option b{color:#f2c94c}.food-recipe-option input[type=number]{padding:8px;min-width:0}.food-status-pending{color:#ffd36b;font-weight:700}.food-status-done{color:#8de0a9;font-weight:700}@media(max-width:480px){.food-recipe-option{grid-template-columns:22px minmax(0,1fr) 76px;padding:8px}.food-recipe-option input[type=number]{padding:7px}}</style>
 <!-- MEMBER PAYMENT -->
 <div class="modal" id="paymentModal">
  <div class="modal-box">
