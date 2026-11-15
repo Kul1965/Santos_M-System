@@ -138,7 +138,7 @@ function renderRecords(){
  const rows=(read().mealRecords||[]).slice().sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
  $("savedRecords").innerHTML=rows.map(r=>{
   const members=r.memberSnapshots||[];
-  const details=members.map(m=>'<div class="mm-record-member"><b>'+esc(m.name)+'</b><strong>'+money(m.charge)+'</strong><small>'+((m.dishes||[]).map(x=>esc(x.name)+" × "+esc(x.servings)).join(" · ")||"Old record")+'</small></div>').join("");
+  const details=members.map(m=>'<div class="mm-record-member"><b>'+esc(m.name)+'</b><strong>'+money(m.charge)+'</strong><small>'+((m.dishes||[]).map(x=>typeof x==="string"?esc(x):esc(x.name)+" × "+esc(x.servings)).join(" · ")||"Old record")+'</small></div>').join("");
   const rationRows=(r.ingredientUsage||[]).map(x=>'<div class="mm-ration-row"><span>'+esc(x.name||x.itemName)+'</span><b>'+Number(x.quantity||0).toLocaleString("en-AU",{maximumFractionDigits:3})+' '+esc(x.unit)+'</b></div>').join("");
   return '<article class="mm-record"><div class="mm-record-head"><div><b>'+esc(r.mealType||"Meal")+'</b><small>'+esc(r.date||"")+' · '+esc(r.day||"")+'</small></div><strong>'+money(r.totalCost)+'</strong></div><p class="mm-help">Dishes: '+esc((r.recipeNames||[]).join(" + "))+'</p><h4>Member-wise account</h4>'+details+'<details><summary>Ration deducted</summary>'+rationRows+'</details></article>';
  }).join("")||'<p class="mm-help">Abhi koi meal record save nahi hua.</p>';
@@ -153,7 +153,7 @@ function sendWhatsApp(){
  const s=staff().find(x=>String(x.id)===$("cookSelect").value),phone=String(s?.phone||s?.mobile||s?.contact||"").replace(/\D/g,"");
  if(!phone){notify("Mess Staff mein Cook ka country-code mobile number add karein.");return}
  const lines=(r.ingredientUsage||[]).map(x=>x.name+": "+Number(x.quantity||0)+" "+x.unit);
- const members=(r.memberSnapshots||[]).map(m=>m.name+": "+(m.dishes||[]).map(x=>x.name+" × "+x.servings).join(", "));
+ const members=(r.memberSnapshots||[]).map(m=>m.name+": "+(m.dishes||[]).map(x=>typeof x==="string"?x:x.name+" × "+x.servings).join(", "));
  const msg=["SANTOS COOKING HOUSE — RATION LIST",r.date+" · "+r.mealType,"DISHES: "+(r.recipeNames||[]).join(", "),"MEMBER-WISE DISHES:",...members,"TOTAL RATION:",...lines,"TOTAL COST: "+money(r.totalCost)];
  const url="https://wa.me/"+phone+"?text="+encodeURIComponent(msg.join("\n"));window.open(url,"_blank");
 }
