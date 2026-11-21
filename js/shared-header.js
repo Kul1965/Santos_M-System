@@ -53,3 +53,150 @@ function init(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+/* Shared PWA updater: checks for published app changes without clearing app data. */
+(function () {
+  "use strict";
+  if (!("serviceWorker" in navigator) || window.__appUpdaterStarted) return;
+  window.__appUpdaterStarted = true;
+
+  const STYLE_ID = "app-update-control-style";
+  const BUTTON_ID = "app-update-control";
+  let registration = null;
+  let reloading = false;
+  let updateFound = false;
+
+  function addControl() {
+    if (document.getElementById(BUTTON_ID)) return;
+    if (!document.getElementById(STYLE_ID)) {
+      const style = document.createElement("style");
+      style.id = STYLE_ID;
+      style.textContent =
+        "#" + BUTTON_ID + "{position:fixed;right:12px;bottom:18px;z-index:2147483000;border:1px solid #d6b54d;border-radius:28px;padding:11px 16px;background:linear-gradient(180deg,#176747,#06452f);color:#fff;font:700 13px Arial,sans-serif;box-shadow:0 3px 0 #9c7d2e,0 7px 18px rgba(0,0,0,.25);cursor:pointer}" +
+        "#" + BUTTON_ID + ":disabled{opacity:.75;cursor:wait}" +
+        "#" + BUTTON_ID + ".available{background:linear-gradient(180deg,#e7c85b,#c99d25);color:#183d2a;border-color:#f4df91}" +
+        "@media(max-width:850px){#" + BUTTON_ID + "{bottom:calc(76px + env(safe-area-inset-bottom));right:10px;padding:10px 13px;font-size:12px}}";
+      document.head.appendChild(style);
+    }
+    const button = document.createElement("button");
+    button.type = "button";
+    button.id = BUTTON_ID;
+    button.textContent = "↻ Update App";
+    button.setAttribute("aria-label", "Check for app updates and refresh");
+    button.addEventListener("click", runManualUpdate);
+    document.body.appendChild(button);
+  }
+
+  function setButton(text, available, disabled) {
+    const button = document.getElementById(BUTTON_ID);
+    if (!button) return;
+    button.textContent = text;
+    button.classList.toggle("available", !!available);
+    button.disabled = !!disabled;
+  }
+
+  function reloadOnce() {
+    if (reloading) return;
+    reloading = true;
+    setButton("✓ Updated — opening…", false, true);
+    window.setTimeout(function () { window.location.reload(); }, 350);
+  }
+
+  function watchRegistration(reg) {
+    registration = reg;
+    if (reg.waiting && navigator.serviceWorker.controller) {
+      updateFound = true;
+      setButton("⬆ New update — tap", true, false);
+    }
+    reg.addEventListener("updatefound", function () {
+      const worker = reg.installing;
+      if (!worker) return;
+      worker.addEventListener("statechange", function () {
+        if (worker.state === "installed" && navigator.serviceWorker.controller) {
+          updateFound = true;
+          setButton("⬆ New update — tap", true, false);
+          // The app shell activates the new worker automatically; reload after activation.
+          if (reg.waiting) reg.waiting.postMessage({ type: "SKIP_WAITING" });
+        }
+      });
+    });
+  }
+
+  navigator.serviceWorker.addEventListener("controllerchange", reloadOnce);
+
+  async function getRegistration() {
+    try {
+      const existing = await navigator.serviceWorker.getRegistration("./");
+      if (existing) {
+        watchRegistration(existing);
+        return existing;
+      }
+      const created = await navigator.serviceWorker.register("./service-worker.js", { updateViaCache: "none" });
+      watchRegistration(created);
+      return created;
+    } catch (error) {
+      console.warn("App update check unavailable:", error);
+      return null;
+    }
+  }
+
+  async function checkForUpdate() {
+    const reg = registration || await getRegistration();
+    if (!reg) return false;
+    try {
+      await reg.update();
+      if (reg.waiting && navigator.serviceWorker.controller) {
+        updateFound = true;
+        setButton("⬆ New update — tap", true, false);
+        return true;
+      }
+    } catch (error) {
+      console.warn("App update check failed:", error);
+    }
+    return false;
+  }
+
+  async function runManualUpdate() {
+    setButton("Checking update…", false, true);
+    const hadUpdate = await checkForUpdate();
+    const reg = registration;
+    if (reg && reg.waiting && navigator.serviceWorker.controller) {
+      setButton("Installing update…", true, true);
+      reg.waiting.postMessage({ type: "SKIP_WAITING" });
+      window.setTimeout(function () {
+        if (!reloading) reloadOnce();
+      }, 1800);
+      return;
+    }
+    if (reg && reg.installing) {
+      setButton("Installing update…", true, true);
+      reg.installing.addEventListener("statechange", function () {
+        if (reg.installing && reg.installing.state === "activated") reloadOnce();
+      });
+      window.setTimeout(function () {
+        if (!reloading) reloadOnce();
+      }, 3500);
+      return;
+    }
+    setButton(hadUpdate || updateFound ? "↻ Refresh App" : "↻ Update App", false, false);
+    // Manual refresh also fetches the latest page and static assets.
+    window.location.reload();
+  }
+
+  function start() {
+    addControl();
+    getRegistration().then(function (reg) {
+      if (reg) checkForUpdate();
+    });
+    window.addEventListener("focus", checkForUpdate);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) checkForUpdate();
+    });
+    window.setInterval(checkForUpdate, 5 * 60 * 1000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
+  }
+})();
