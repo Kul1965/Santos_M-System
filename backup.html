@@ -73,7 +73,7 @@ async function saveBackupFile(mode){
 }
 function updateExistingBackup(){return saveBackupFile("update");}
 function createBackup(){return saveBackupFile("create");}
-function downloadBackup(function downloadBackup(blob,name){
+function downloadBackup(blob,name){
  const url=URL.createObjectURL(blob),a=document.createElement("a");
  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
  setTimeout(()=>URL.revokeObjectURL(url),2000);
